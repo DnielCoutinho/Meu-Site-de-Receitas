@@ -1,23 +1,393 @@
-/* Import Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+/* COUTOPASTA - MODERN & RESPONSIVE CSS */
 
-/* General Styles */
-body {
-    font-family: 'Poppins', sans-serif;
+/* 1. VARIABLES & BASIC SETUP
+-------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lora:wght@400;500&display=swap');
+
+:root {
+    /* Paleta de Cores Inspirada em Comida */
+    --primary-color: #d32f2f;  /* Vermelho tomate intenso */
+    --secondary-color: #795548; /* Marrom terra, café */
+    --accent-color: #ffc107;   /* Amarelo mostarda, queijo */
+    --background-light: #fffaf0; /* Fundo creme, como massa fresca */
+    --text-dark: #3e2723;      /* Marrom escuro, chocolate amargo */
+    --text-light: #ffffff;
+    --surface-color: #ffffff;
+    --border-color: #e0e0e0;
+
+    /* Sombra e Transições */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.07);
+    --shadow-md: 0 5px 15px rgba(0,0,0,0.1);
+    --transition-fast: all 0.2s ease-in-out;
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: #FFFBF5; /* Soft beige background */
-    color: #4A4A4A;
-    line-height: 1.6;
 }
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--background-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+h1, h2, h3 {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.8rem; text-align: center; margin-bottom: 2rem; }
+h3 { font-size: 1.3rem; }
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+/* 2. HEADER & NAVIGATION
+-------------------------------------------------- */
+.main-header {
+    background-color: var(--surface-color);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-sm);
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.main-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.logo {
+    font-family: 'Lora', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.main-nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.main-nav a {
+    color: var(--text-dark);
+    font-weight: 600;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: var(--transition-fast);
+}
+
+.main-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: var(--transition-smooth);
+}
+
+.main-nav a:hover {
+    color: var(--primary-color);
+}
+
+.main-nav a:hover::after {
+    width: 100%;
+}
+
+.hamburger-menu {
+    display: none; /* Oculto em desktop */
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.hamburger-menu .bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    background-color: var(--text-dark);
+    transition: var(--transition-smooth);
+}
+
+/* 3. HERO SECTION
+-------------------------------------------------- */
+.hero-section {
+    height: 60vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    color: var(--text-light);
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Overlay escuro para legibilidade */
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn {
+    background-color: var(--accent-color);
+    color: var(--text-dark);
+    padding: 0.7rem 1.8rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-transform: none; /* REMOVIDO uppercase */
+    transition: var(--transition-fast);
+    box-shadow: var(--shadow-md);
+    display: inline-block;
+}
+
+.btn:hover {
+    background-color: #ffca28; /* Amarelo mais claro */
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* 4. RECIPE GRID
+-------------------------------------------------- */
+.receitas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.receita-card {
+    background-color: var(--surface-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition-smooth);
+    border: 1px solid var(--border-color);
+}
+
+.receita-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-md);
+}
+
+.receita-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.receita-card-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Faz o conteúdo crescer */
+}
+
+.receita-card-content h3 {
+    color: var(--secondary-color);
+    height: 3.9rem; /* Altura fixa para 3 linhas de texto (aprox) */
+    overflow: hidden; /* Esconde o que passar da altura */
+    margin-bottom: 1rem;
+    line-height: 1.3; /* Garante consistência entre linhas */
+}
+
+.receita-card .btn {
+    margin-top: auto; /* Empurra o botão para o final do card */
+    text-align: center;
+    width: 100%;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+}
+
+.receita-card .btn:hover {
+    background-color: #e53935; /* Vermelho mais claro */
+}
+
+/* 5. FOOTER
+-------------------------------------------------- */
+.main-footer {
+    background-color: var(--text-dark);
+    color: var(--background-light);
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+
+.main-footer p {
+    margin: 0;
+}
+
+/* 6. FORMS
+-------------------------------------------------- */
+.form-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--surface-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    transition: var(--transition-fast);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.2);
+}
+
+.form-group .error-message {
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    display: none; /* Oculto por padrão */
+}
+
+.form-control.invalid {
+    border-color: var(--primary-color);
+}
+
+/* 7. RESPONSIVE DESIGN (Mobile-First)
+-------------------------------------------------- */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: block;
+    }
+
+    .main-nav {
+        position: fixed;
+        top: 72px; /* Altura do header */
+        left: -100%; /* Começa fora da tela */
+        width: 80%;
+        height: 100vh;
+        background-color: var(--surface-color);
+        flex-direction: column;
+        align-items: center;
+        padding-top: 2rem;
+        gap: 2rem;
+        transition: var(--transition-smooth);
+        box-shadow: var(--shadow-md);
+    }
+
+    .main-nav.is-active {
+        left: 0; /* Entra na tela */
+    }
+
+    .main-nav a {
+        font-size: 1.1rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.15rem; }
+}
+
+/* 8. ANIMATIONS
+-------------------------------------------------- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 
 /* Header */
 header {
-    background: #ff5722; /* Main Orange */
-    color: #fff;
-    padding: 1rem 2rem;
+    background: var(--primary-color); /* Use primary color */
+    color: var(--light-text);
+    padding: 1.5rem 2rem;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 15px var(--shadow-medium);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -25,187 +395,86 @@ header {
 
 header h1 {
     margin: 0;
-    font-size: 2.2em;
+    font-size: 2.5em;
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
+    text-shadow: 1px 1px 2px var(--shadow-light);
 }
 
 /* Navigation */
 nav {
-    background-color: #ff7a50; /* Lighter orange for nav bar */
-    padding: 0.5rem;
+    background-color: var(--secondary-color); /* Use secondary color */
+    padding: 0.7rem;
     text-align: center;
+    box-shadow: 0 2px 8px var(--shadow-light);
 }
 
 nav a {
-    color: #fff;
+    color: var(--light-text);
     text-decoration: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 50px; /* Pill shape */
-    margin: 0 0.5rem;
-    font-weight: 400;
+    padding: 0.9rem 1.8rem;
+    border-radius: 30px; /* More rounded pills */
+    margin: 0 0.7rem;
+    font-weight: 500;
     transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 nav a:hover {
-    background-color: #fff;
-    color: #ff5722;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    background-color: var(--accent-color);
+    color: var(--dark-text);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 5px 15px var(--shadow-medium);
 }
 
 /* Main Content Area */
 main {
-    max-width: 1100px;
-    margin: 2rem auto;
-    padding: 2rem;
-    min-height: calc(100vh - 250px); /* Adjust height based on header/footer */
-}
-
-/* Section Titles */
-section {
+    max-width: 1200px;
+    margin: 2.5rem auto;
+    padding: 2.5rem
     margin-bottom: 30px;
-}
-
-h2 {
-    color: #ff5722;
-    border-bottom: 2px solid #ff5722;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
     font-weight: 600;
-}
-
-/* Article/Card Styles */
-article {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-article:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-article img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 15px;
-}
-
-article h3 {
-    color: #ff5722;
-    margin-top: 0;
-    font-size: 1.4em;
-    font-weight: 600;
-}
-
-/* Footer */
-footer {
-    background-color: #333;
-    color: #fff;
+    font-size: 2em;
     text-align: center;
-    padding: 1.5rem;
-    width: 100%;
-    margin-top: 40px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* Estilos para formulários */
-form {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 2rem 3rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #555;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
-    border-color: #ff5722;
-    box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.2);
-    outline: none;
-}
-
-input[type="submit"] {
-    background-color: #ff5722;
-    color: white;
-    padding: 14px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.1em;
-    font-weight: 600;
-    width: 100%;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-input[type="submit"]:hover {
-    background-color: #e64a19; /* Darker orange on hover */
-    transform: translateY(-2px);
-}
-
-.index-content {
-    text-align: center;
-    font-size: 1.2rem;
-}
-
-/* Grid de Receitas na Página Inicial */
+/* Recipe Grid */
 .receitas-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2.5rem;
+    margin-top: 2.5rem;
 }
 
 .receita-card {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: 0 6px 20px var(--shadow-light);
     overflow: hidden;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #eee;
 }
 
 .receita-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px var(--shadow-medium);
 }
 
 .receita-card img {
     width: 100%;
-    height: 200px;
+    height: 220px; /* Slightly taller images */
     object-fit: cover;
     margin-bottom: 0;
+    border-bottom: 1px solid #eee;
 }
 
 .receita-card-content {
-    padding: 1.5rem;
+    padding: 1.8rem;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -213,70 +482,370 @@ input[type="submit"]:hover {
 
 .receita-card-content h3 {
     margin-top: 0;
-    margin-bottom: auto; /* Empurra o botão para o final do card */
-    font-size: 1.2em;
-    color: #333;
+    margin-bottom: 1rem; /* More space below title */
+    font-size: 1.4em;
+    color: var(--dark-text);
+    font-weight: 600;
+    line-height: 1.3;
 }
 
 .btn-ver-receita {
     display: block;
-    background-color: #ff5722;
-    color: white !important; /* Garante que a cor do texto seja branca */
-    padding: 10px 15px;
+    background-color: var(--accent-color);
+    color: var(--light-text) !important;
+    padding: 12px 20px;
     border-radius: 8px;
     text-decoration: none;
     text-align: center;
-    margin-top: 1rem;
-    transition: background-color 0.3s ease;
+    margin-top: auto; /* Pushes button to the bottom */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 .btn-ver-receita:hover {
-    background-color: #e64a19;
-    color: white !important;
+    background-color: #e08e17; /* Slightly darker accent */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px var(--shadow-light);
 }
 
-/* Página de Visualização de Receita */
-.receita-view {
-    background-color: #fff;
-    padding: 2rem 3rem;
+/* Footer */
+footer {
+    background-color: var(--dark-text);
+    color: var(--light-text);
+    text-align: center;
+    padding: 2rem;
+    width: 100%;
+    margin-top: 50px;
+    box-shadow: 0 -4px 15px var(--shadow-medium);
+}
+
+/* Form Styles */
+form {
+    max-width: 700px;
+    margin: 2rem auto;
+    background-color: var(--card-background);
+    padding: 3rem 4rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px var(--shadow-medium);
+    border: 1px solid #eee;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--dark-text);
+    font-size: 1.1em;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.2);
+    outline: none;
+}
+
+input[type="submit"] {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+    padding: 16px 25px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: 700;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    letter-spacing: 0.5px;
+}
+
+input[type="submit"]:hover {
+    background-color: #e05a5a; /* Darker primary on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px var(--shadow-light);
+}
+
+.index-content {
+    text-align: center;
+    font-size: 1.3rem;
+    padding: 2rem;
+    background-color: var(--card-background);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px var(--shadow-light);
+    margin-top: 2rem;
+}
+
+/* Recipe View Page */
+.receita-view {
+    background-color: var(--card-background);
+    padding: 3rem 4rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px var(--shadow-medium);
+    border: 1px solid #eee;
 }
 
 .receita-view h2 {
     margin-top: 0;
     text-align: center;
+    font-size: 2.5em;
+    color: var(--primary-color);
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 1rem;
 }
 
 .receita-meta {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     color: #777;
+    font-size: 1.1em;
 }
 
 .receita-meta span {
-    margin: 0 1rem;
-    background-color: #f1f1f1;
-    padding: 5px 15px;
-    border-radius: 20px;
+    margin: 0 1.2rem;
+    background-color: var(--background-light);
+    padding: 8px 18px;
+    border-radius: 25px;
     font-size: 0.9em;
+    font-weight: 500;
+    color: var(--dark-text);
+    box-shadow: inset 0 1px 3px var(--shadow-light);
 }
 
 .receita-content {
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
     flex-wrap: wrap;
+    margin-top: 2rem;
 }
 
 .receita-content .ingredientes,
 .receita-content .preparo {
     flex: 1;
-    min-width: 300px;
+    min-width: 320px;
+    background-color: var(--background-light);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: inset 0 2px 8px var(--shadow-light);
 }
 
 .receita-content h3 {
-    color: #ff5722;
-    border-bottom: 2px solid #ff9800;
-    padding-bottom: 8px;
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+    margin-bottom: 1.5rem;
+    font-size: 1.8em;
+    font-weight: 600;
+}
+
+.receita-content ul,
+.receita-content ol {
+    list-style-position: inside;
+    padding-left: 0;
+}
+
+.receita-content li {
+    margin-bottom: 0.8rem;
+    font-size: 1.05em;
+}
+
+/* 9. TESTIMONIAL SLIDER
+-------------------------------------------------- */
+.testimonial-slider {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: hidden;
+    text-align: center;
+    padding: 2rem;
+    background: var(--surface-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+.testimonial {
+    display: none; /* Oculto por padrão pelo JS */
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.testimonial.active {
+    display: block;
+}
+
+.testimonial p {
+    font-family: 'Lora', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    line-height: 1.5;
     margin-bottom: 1rem;
+    color: var(--secondary-color);
+}
+
+.testimonial h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+/* 10. FILTER BUTTONS
+-------------------------------------------------- */
+.filter-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: none;
+    border: 2px solid var(--border-color);
+    color: var(--secondary-color);
+    padding: 0.6rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.filter-btn:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--text-dark);
+}
+
+.filter-btn.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-light);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2em;
+    }
+
+    nav a {
+        padding: 0.7rem 1rem;
+        margin: 0 0.3rem;
+        font-size: 0.9em;
+    }
+
+    main {
+        padding: 1.5rem;
+        margin: 1.5rem auto;
+    }
+
+    h2 {
+        font-size: 1.8em;
+    }
+
+    .receitas-grid {
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+    .receita-card-content {
+        padding: 1.2rem;
+    }
+
+    .receita-card-content h3 {
+        font-size: 1.2em;
+    }
+
+    .btn-ver-receita {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+
+    form {
+        padding: 2rem;
+    }
+
+    .receita-view {
+        padding: 2rem;
+    }
+
+    .receita-content {
+        gap: 2rem;
+    }
+
+    .receita-content h3 {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    nav {
+        padding: 0.5rem;
+    }
+
+    nav a {
+        display: block;
+        margin: 0.5rem auto;
+        width: 80%;
+    }
+
+    main {
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    .receitas-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .receita-card img {
+        height: 180px;
+    }
+
+    form {
+        padding: 1.5rem;
+    }
+
+    .receita-view {
+        padding: 1.5rem;
+    }
+
+    .receita-content .ingredientes,
+    .receita-content .preparo {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .receita-content h3 {
+        font-size: 1.3em;
+    }
 }

@@ -1,3 +1,4 @@
+
 <?php
 require_once('../includes/header.php');
 require_once('../../config.php');
@@ -10,24 +11,31 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $mensagem = '';
 
-// Busca categorias e subcategorias para os dropdowns
+// Busca dados para os dropdowns
+$paises_result = $conn->query("SELECT id, nome FROM paises ORDER BY nome");
+$tipos_refeicao_result = $conn->query("SELECT id, nome FROM tipos_refeicao ORDER BY nome");
 $categorias_result = $conn->query("SELECT id, nome FROM categorias ORDER BY nome");
-$subcategorias_result = $conn->query("SELECT id, nome FROM subcategorias ORDER BY nome");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST['nome'];
+    $pais_id = $_POST['pais_id'];
+    $tipo_refeicao_id = $_POST['tipo_refeicao_id'];
     $categoria_id = $_POST['categoria_id'];
-    $subcategoria_id = $_POST['subcategoria_id'];
     $ingredientes = $_POST['ingredientes'];
     $preparo = $_POST['preparo'];
     $usuario_id = $_SESSION['usuario_id'];
+    $foto_blob = null;
+    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+        $foto_blob = file_get_contents($_FILES['foto']['tmp_name']);
+    }
 
-    if (empty($nome) || empty($categoria_id) || empty($subcategoria_id) || empty($ingredientes) || empty($preparo)) {
+    if (empty($nome) || empty($pais_id) || empty($tipo_refeicao_id) || empty($categoria_id) || empty($ingredientes) || empty($preparo)) {
         $mensagem = "<p style='color:red;'>Todos os campos são obrigatórios.</p>";
     } else {
-        $sql = "INSERT INTO comidas (nome, categoria_id, subcategoria_id, ingredientes, preparo, usuario_id) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO receitas (nome, pais_id, tipo_refeicao_id, categoria_id, ingredientes, preparo, usuario_id, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("siissi", $nome, $categoria_id, $subcategoria_id, $ingredientes, $preparo, $usuario_id);
+        $stmt->send_long_data(7, $foto_blob);
+        $stmt->bind_param("siiisssb", $nome, $pais_id, $tipo_refeicao_id, $categoria_id, $ingredientes, $preparo, $usuario_id, $foto_blob);
 
         if ($stmt->execute()) {
             $mensagem = "<p style='color:green;'>Receita cadastrada com sucesso!</p>";
@@ -42,9 +50,25 @@ $conn->close();
 
 <h2>Cadastrar Nova Receita</h2>
 <?php echo $mensagem; ?>
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     <label for="nome">Nome da Receita:</label>
     <input type="text" id="nome" name="nome" required>
+
+    <label for="pais_id">País:</label>
+    <select name="pais_id" id="pais_id" required>
+        <option value="">Selecione um país</option>
+        <?php while($pais = $paises_result->fetch_assoc()): ?>
+            <option value="<?php echo $pais['id']; ?>"><?php echo htmlspecialchars($pais['nome']); ?></option>
+        <?php endwhile; ?>
+    </select>
+
+    <label for="tipo_refeicao_id">Tipo de Refeição:</label>
+    <select name="tipo_refeicao_id" id="tipo_refeicao_id" required>
+        <option value="">Selecione um tipo de refeição</option>
+        <?php while($tipo = $tipos_refeicao_result->fetch_assoc()): ?>
+            <option value="<?php echo $tipo['id']; ?>"><?php echo htmlspecialchars($tipo['nome']); ?></option>
+        <?php endwhile; ?>
+    </select>
 
     <label for="categoria_id">Categoria:</label>
     <select name="categoria_id" id="categoria_id" required>
@@ -54,19 +78,14 @@ $conn->close();
         <?php endwhile; ?>
     </select>
 
-    <label for="subcategoria_id">Subcategoria:</label>
-    <select name="subcategoria_id" id="subcategoria_id" required>
-        <option value="">Selecione uma subcategoria</option>
-        <?php while($sub = $subcategorias_result->fetch_assoc()): ?>
-            <option value="<?php echo $sub['id']; ?>"><?php echo htmlspecialchars($sub['nome']); ?></option>
-        <?php endwhile; ?>
-    </select>
-
     <label for="ingredientes">Ingredientes:</label>
     <textarea name="ingredientes" id="ingredientes" rows="8" placeholder="Liste os ingredientes, um por linha." required></textarea>
 
     <label for="preparo">Modo de Preparo:</label>
     <textarea name="preparo" id="preparo" rows="12" placeholder="Descreva o passo a passo da receita." required></textarea>
+
+    <label for="foto">Foto da Receita:</label>
+    <input type="file" id="foto" name="foto" accept="image/*">
 
     <input type="submit" value="Cadastrar Receita">
 </form>

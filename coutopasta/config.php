@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "meu_site_de_receitas";
+$dbname = "coutopasta_receitas";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

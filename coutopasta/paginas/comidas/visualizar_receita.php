@@ -11,17 +11,20 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 
 $receita_id = intval($_GET['id']);
 
-// Busca os detalhes completos da receita, incluindo nomes de categoria e subcategoria
+// Busca os detalhes completos da receita
 $sql = "SELECT 
-            c.nome, 
-            c.ingredientes, 
-            c.preparo, 
-            cat.nome AS categoria_nome, 
-            sub.nome AS subcategoria_nome 
-        FROM comidas AS c
-        JOIN categorias AS cat ON c.categoria_id = cat.id
-        JOIN subcategorias AS sub ON c.subcategoria_id = sub.id
-        WHERE c.id = ?";
+            r.nome, 
+            r.ingredientes, 
+            r.preparo, 
+            r.foto,
+            p.nome AS pais_nome, 
+            tr.nome AS tipo_refeicao_nome,
+            c.nome AS categoria_nome
+        FROM receitas AS r
+        JOIN paises AS p ON r.pais_id = p.id
+        JOIN tipos_refeicao AS tr ON r.tipo_refeicao_id = tr.id
+        JOIN categorias AS c ON r.categoria_id = c.id
+        WHERE r.id = ?";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $receita_id);
@@ -33,10 +36,15 @@ if ($result->num_rows > 0) {
 ?>
     <div class="receita-view">
         <h2><?php echo htmlspecialchars($receita['nome']); ?></h2>
-        
+
         <div class="receita-meta">
+            <span><strong>País:</strong> <?php echo htmlspecialchars($receita['pais_nome']); ?></span>
+            <span><strong>Tipo de Refeição:</strong> <?php echo htmlspecialchars($receita['tipo_refeicao_nome']); ?></span>
             <span><strong>Categoria:</strong> <?php echo htmlspecialchars($receita['categoria_nome']); ?></span>
-            <span><strong>Subcategoria:</strong> <?php echo htmlspecialchars($receita['subcategoria_nome']); ?></span>
+        </div>
+
+        <div class="receita-img">
+            <img src="<?php echo htmlspecialchars($receita['foto']); ?>" alt="<?php echo htmlspecialchars($receita['nome']); ?>">
         </div>
 
         <div class="receita-content">

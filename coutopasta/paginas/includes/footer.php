@@ -1,7 +1,9 @@
-    </main>
-    <footer>
-        <p>&copy; 2024 Meu Site de Receitas</p>
+</main>
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; <?php echo date("Y"); ?> CoutoPasta. Todos os direitos reservados.</p>
+        </div>
     </footer>
-    <script src="/coutopasta/js/script.js"></script>
+    <script src="/coutopasta/js/script.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

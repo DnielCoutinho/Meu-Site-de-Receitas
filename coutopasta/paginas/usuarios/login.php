@@ -42,16 +42,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<h2>Login</h2>
-<?php echo $mensagem; ?>
-<form method="POST">
-    <label for="email">Email:</label><br>
-    <input type="email" id="email" name="email" required><br><br>
+<div class="form-container">
+    <h2>Login</h2>
+    <?php echo $mensagem; ?>
+    <form method="POST" class="form-validate" novalidate>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" class="form-control" data-validate="required email">
+        </div>
 
-    <label for="senha">Senha:</label><br>
-    <input type="password" id="senha" name="senha" required><br><br>
+        <div class="form-group">
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" class="form-control" data-validate="required">
+        </div>
 
-    <input type="submit" value="Entrar">
-</form>
+        <div class="form-group">
+            <input type="submit" value="Entrar" class="btn">
+        </div>
+    </form>
+</div>
 
 <?php require_once('../includes/footer.php'); ?>
