@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         $usuario = $result->fetch_assoc();
         if (password_verify($senha, $usuario['senha'])) {
-            $            $_SESSION['usuario_id'] = $usuario['id'];
+                        $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['usuario_nome'] = $usuario['nome'];
             $_SESSION['is_admin'] = $usuario['is_admin'];
             header("Location: /coutopasta/"); // Redireciona para a página principal
@@ -61,6 +61,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="submit" value="Entrar" class="btn">
         </div>
     </form>
+    <div style="text-align: center; margin-top: 20px;">
+        <p>Não tem uma conta? <a href="criar_usuario.php">Crie uma aqui</a>.</p>
+    </div>
 </div>
 
 <?php require_once('../includes/footer.php'); ?>

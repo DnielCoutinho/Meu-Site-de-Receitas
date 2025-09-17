@@ -258,8 +258,8 @@ REPLACE INTO `receitas` (`nome`, `pais_id`, `tipo_refeicao_id`, `categoria_id`, 
    - Com um martelo de carne (o lado liso) ou um rolo de massa, bata os bifes delicadamente, mas firmemente, até que fiquem bem finos, com aproximadamente 2-3 mm de espessura. O objetivo é uniformizar a espessura para um cozimento rápido e homogêneo.
 2. **Temperar a Vitela:**
    - Tempere os bifes afinados generosamente com sal e pimenta-do-reino moída na hora em ambos os lados.
-3. **Preparar a Estação de Empanamento (Mise en Place):):**
-   - Prepare três pratos fundos ou recipientes rasos para o empanamento:
+3. **Preparar a Estação de Empanamento (Mise en Place):**
+   - Prepare três pratos fundos ou recipientes rasos para o empanamento.
      - **Primeiro prato:** 50g de farinha de trigo (cerca de ½ xícara).
      - **Segundo prato:** 2 ovos grandes batidos com um garfo, adicionando uma pitada de sal e 1 colher de sopa de água ou leite para diluir levemente.
      - **Terceiro prato:** 50g de farinha de rosca (cerca de 1 xícara), preferencialmente pão ralado fresco para uma textura mais crocante.

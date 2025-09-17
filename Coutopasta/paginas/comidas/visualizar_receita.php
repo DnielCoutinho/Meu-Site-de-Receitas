@@ -11,13 +11,15 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 
 $receita_id = intval($_GET['id']);
 
-// Busca os detalhes completos da receita
+// Busca os detalhes completos da receita, AGORA INCLUINDO O r.usuario_id
 $sql = "SELECT 
+            r.id,
             r.nome, 
             r.ingredientes, 
             r.preparo, 
             r.foto,
             r.info_adicional,
+            r.usuario_id,
             p.nome AS pais_nome, 
             tr.nome AS tipo_refeicao_nome,
             c.nome AS categoria_nome
@@ -36,6 +38,7 @@ if ($result->num_rows > 0) {
     $receita = $result->fetch_assoc();
 ?>
     <div class="receita-view container">
+
         <h2><?php echo htmlspecialchars($receita['nome']); ?></h2>
 
         <div class="receita-meta">
@@ -44,76 +47,92 @@ if ($result->num_rows > 0) {
             <span><strong>Categoria:</strong> <?php echo htmlspecialchars($receita['categoria_nome']); ?></span>
         </div>
 
-        <?php if (isset($_SESSION['usuario_id']) && (isset($receita['usuario_id']) && $receita['usuario_id'] == $_SESSION['usuario_id'] || (isset($_SESSION['is_admin']) && $_SESSION['is_admin']))): ?>
+        <?php 
+        // Lógica de permissão simplificada e corrigida
+        $pode_editar = false;
+        if (isset($_SESSION['usuario_id'])) {
+            $is_owner = isset($receita['usuario_id']) && $_SESSION['usuario_id'] == $receita['usuario_id'];
+            $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'];
+            if ($is_owner || $is_admin) {
+                $pode_editar = true;
+            }
+        }
+        
+        if ($pode_editar): 
+        ?>
             <div class="receita-actions" style="text-align: center; margin-bottom: 20px;">
                 <a href="editar_receita.php?id=<?php echo $receita_id; ?>" class="btn">Editar Receita</a>
+                <a href="excluir_receita.php?id=<?php echo $receita_id; ?>" class="btn" onclick="return confirm('Tem certeza que deseja excluir esta receita? Esta ação não pode ser desfeita.');" style="background-color: #dc3545; border-color: #dc3545; color: white;">Excluir Receita</a>
             </div>
         <?php endif; ?>
 
         <div class="receita-details">
+            <?php if (!empty($receita['foto'])): ?>
             <div class="receita-img">
-                <img src="/coutopasta/paginas/comidas/imagem_receita.php?id=<?php echo $receita_id; ?>" alt="<?php echo htmlspecialchars($receita['nome']); ?>">
+                <img src="/coutopasta/uploads/receitas/<?php echo htmlspecialchars($receita['foto']); ?>" alt="Foto de <?php echo htmlspecialchars($receita['nome']); ?>" style="width: 100%; max-width: 600px; height: auto; border-radius: 8px; margin: 0 auto 20px; display: block;">
             </div>
+            <?php endif; ?>
 
-            <div class="receita-content">
-                <div class="ingredientes">
-                    <h3>Ingredientes</h3>
-                    <p><?php echo nl2br(htmlspecialchars($receita['ingredientes'])); ?></p>
-                </div>
-                
-                <div class="preparo">
-                    <div class="preparo-header">
-                        <h3>Modo de Preparo</h3>
-                        <div class="preparo-tempos">
-                            <span class="tempo-item"><span class="tempo-icone">⏱️</span> <strong>Preparo:</strong> <?php echo htmlspecialchars($receita['tempo_preparo'] ?? ''); ?></span>
-                            <span class="tempo-item"><span class="tempo-icone">🍳</span> <strong>Cozimento:</strong> <?php echo htmlspecialchars($receita['tempo_cozimento'] ?? ''); ?></span>
-                            <span class="tempo-item"><span class="tempo-icone">⏳</span> <strong>Espera:</strong> <?php echo htmlspecialchars($receita['tempo_espera'] ?? ''); ?></span>
-                        </div>
-                    </div>
-                    <?php
-                    // Novo formato: cada seção começa com um título (linha sem indentação), seguida de passos (linhas com indentação)
-                    $linhas = preg_split('/\r?\n/', $receita['preparo']);
-                    $secoes = [];
-                    $secaoAtual = null;
-                    foreach ($linhas as $linha) {
-                        if (trim($linha) === '') continue;
-                        if (preg_match('/^[^\s].+$/', $linha)) {
-                            $linhaTrimmed = trim($linha);
-                        if ($linhaTrimmed === '') continue;
-
-                        // Identifica se a linha é um título de seção
-                        // Critério: começa com "Número. " OU termina com ":"
-                        $isTitulo = preg_match('/^\d+\.\s/', $linhaTrimmed) || substr($linhaTrimmed, -1) === ':';
-
-                        if ($isTitulo) {
-                            $secaoAtual = $linhaTrimmed;
-                            $secoes[$secaoAtual] = [];
-                        } else if ($secaoAtual) {
-                            $secoes[$secaoAtual][] = $linhaTrimmed;
-                        } else {
-                            // Se não é título e não há seção atual, adiciona a uma seção "Geral"
-                            if (!isset($secoes['Geral'])) {
-                                $secoes['Geral'] = [];
-                            }
-                            $secoes['Geral'][] = $linhaTrimmed;
-                        }
-                        } else if ($secaoAtual) {
-                            $secoes[$secaoAtual][] = trim($linha);
+            <div class="ingredientes">
+                <h3>Ingredientes</h3>
+                <?php
+                $ingredientes_texto = trim($receita['ingredientes']);
+                if (!empty($ingredientes_texto)) {
+                    echo '<ul>';
+                    // Normaliza os separadores: substitui quebras de linha por vírgulas
+                    $ingredientes_normalizado = str_replace(array("\r\n", "\r", "\n"), ",", $ingredientes_texto);
+                    // Divide a string por vírgulas
+                    $ingredientes_lista = explode(',', $ingredientes_normalizado);
+                    
+                    foreach ($ingredientes_lista as $ingrediente) {
+                        $ingrediente_trim = trim($ingrediente);
+                        if (!empty($ingrediente_trim)) {
+                            echo '<li>' . htmlspecialchars($ingrediente_trim) . '</li>';
                         }
                     }
+                    echo '</ul>';
+                } else {
+                    echo '<p>Nenhum ingrediente listado.</p>';
+                }
+                ?>
+            </div>
+            
+            <div class="preparo">
+                <h3>Modo de Preparo</h3>
+                <div class="preparo-passos">
+                    <?php
+                    $preparo_texto = $receita['preparo'];
+                    $linhas = preg_split('/?
+/', $preparo_texto);
+                    
+                    $is_list_open = false;
+
+                    foreach ($linhas as $linha) {
+                        $linha_trim = trim($linha);
+                        if (empty($linha_trim)) continue;
+
+                        // Se a linha termina com ':', é um título de seção
+                        if (substr($linha_trim, -1) === ':') {
+                            if ($is_list_open) {
+                                echo '</ol>'; // Fecha a lista anterior
+                                $is_list_open = false;
+                            }
+                            echo '<h4 class="preparo-titulo-destaque">' . htmlspecialchars($linha_trim) . '</h4>'; // Título da seção com classe
+                        } else {
+                            if (!$is_list_open) {
+                                echo '<ol class="preparo-lista">'; // Abre uma nova lista
+                                $is_list_open = true;
+                            }
+                            // Formata o passo com destaque para texto entre **
+                            $passo_formatado = preg_replace('/\*\*(.*?)\*\*/', '<span class="destaque">$1</span>', htmlspecialchars($linha_trim));
+                            echo '<li>' . $passo_formatado . '</li>'; // Item da lista
+                        }
+                    }
+
+                    if ($is_list_open) {
+                        echo '</ol>'; // Fecha a última lista
+                    }
                     ?>
-                    <div class="preparo-secoes">
-                        <?php foreach ($secoes as $titulo => $passos): ?>
-                            <div class="preparo-bloco">
-                                <div class="preparo-titulo"> <?php echo htmlspecialchars($titulo); ?> </div>
-                                <ol class="preparo-lista">
-                                    <?php foreach ($passos as $passo): ?>
-                                        <li><?php echo preg_replace('/\*\*(.*?)\*\*/', '<span class="destaque">$1</span>', htmlspecialchars($passo)); ?></li>
-                                    <?php endforeach; ?>
-                                </ol>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
                 </div>
             </div>
         </div>

@@ -2,6 +2,8 @@
 require_once('../includes/header.php');
 require_once('../../config.php');
 
+$mensagem = '';
+
 // Se o usuário já estiver logado, redireciona para a página inicial
 if (isset($_SESSION['usuario_id'])) {
     header("Location: /coutopasta/");
@@ -11,27 +13,42 @@ if (isset($_SESSION['usuario_id'])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST['nome'];
     $email = $_POST['email'];
-    $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+    $senha_post = $_POST['senha'];
 
-    $sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $nome, $email, $senha);
+    // 1. Verificar se o email já existe
+    $sql_check = "SELECT id FROM usuarios WHERE email = ?";
+    $stmt_check = $conn->prepare($sql_check);
+    $stmt_check->bind_param("s", $email);
+    $stmt_check->execute();
+    $result_check = $stmt_check->get_result();
 
-    if ($stmt->execute()) {
-        // Redireciona para a página de login após o sucesso
-        header("Location: login.php?status=sucesso");
-        exit();
+    if ($result_check->num_rows > 0) {
+        $mensagem = "<p style='color:red;'>Este email já está cadastrado. Por favor, use outro ou faça login.</p>";
     } else {
-        echo "<p>Erro ao criar usuário: " . $stmt->error . "</p>";
-    }
+        // 2. Se não existir, prosseguir com a criação
+        $senha_hash = password_hash($senha_post, PASSWORD_DEFAULT);
 
-    $stmt->close();
+        $sql_insert = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
+        $stmt_insert = $conn->prepare($sql_insert);
+        $stmt_insert->bind_param("sss", $nome, $email, $senha_hash);
+
+        if ($stmt_insert->execute()) {
+            // Redireciona para a página de login após o sucesso
+            header("Location: login.php?status=sucesso");
+            exit();
+        } else {
+            $mensagem = "<p style='color:red;'>Erro ao criar usuário: " . $stmt_insert->error . "</p>";
+        }
+        $stmt_insert->close();
+    }
+    $stmt_check->close();
     $conn->close();
 }
 ?>
 
 <div class="form-container">
     <h2>Criar Novo Usuário</h2>
+    <?php if(!empty($mensagem)) echo $mensagem; ?>
     <form method="POST" class="form-validate" novalidate>
         <div class="form-group">
             <label for="nome">Nome:</label>

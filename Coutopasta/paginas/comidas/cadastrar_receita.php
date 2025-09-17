@@ -25,21 +25,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $preparo = $_POST['preparo'];
     $info_adicional = isset($_POST['info_adicional']) ? $_POST['info_adicional'] : null;
     $usuario_id = $_SESSION['usuario_id'];
-    $foto_blob = null;
-    $foto_mime_type = null;
-    $foto_mime_type = null;
+    $foto_nome = null;
+
+    // Lógica para upload da foto
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-        $foto_blob = file_get_contents($_FILES['foto']['tmp_name']);
-        $foto_mime_type = $_FILES['foto']['type']; // Captura o tipo MIME
+        // Diretório de upload relativo ao script atual
+        $upload_dir = '../../uploads/receitas/';
+        
+        // Garante que o nome do arquivo é seguro
+        $nome_arquivo = basename($_FILES['foto']['name']);
+        
+        // Cria um nome único para evitar sobreposições e problemas com nomes de arquivo
+        $nome_foto_unico = uniqid() . '-' . preg_replace('/[^A-Za-z0-9\.\-]/', '_', $nome_arquivo);
+        
+        $caminho_foto = $upload_dir . $nome_foto_unico;
+
+        // Move o arquivo para o diretório de uploads
+        if (move_uploaded_file($_FILES['foto']['tmp_name'], $caminho_foto)) {
+            $foto_nome = $nome_foto_unico; // Salva apenas o nome do arquivo no banco
+        } else {
+            $mensagem = "<p style='color:red;'>Erro ao fazer upload da foto.</p>";
+        }
     }
 
-    if (empty($nome) || empty($pais_id) || empty($tipo_refeicao_id) || empty($categoria_id) || empty($ingredientes) || empty($preparo)) {
-        $mensagem = "<p style='color:red;'>Todos os campos são obrigatórios.</p>";
-    } else {
-        $sql = "INSERT INTO receitas (nome, pais_id, tipo_refeicao_id, categoria_id, ingredientes, preparo, info_adicional, usuario_id, foto, foto_mime_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    if (empty($mensagem) && (empty($nome) || empty($pais_id) || empty($tipo_refeicao_id) || empty($categoria_id) || empty($ingredientes) || empty($preparo))) {
+        $mensagem = "<p style='color:red;'>Todos os campos, exceto a foto, são obrigatórios.</p>";
+    } elseif (empty($mensagem)) {
+        // A coluna `foto_mime_type` não é mais necessária
+        $sql = "INSERT INTO receitas (nome, pais_id, tipo_refeicao_id, categoria_id, ingredientes, preparo, info_adicional, usuario_id, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->send_long_data(8, $foto_blob);
-        $stmt->bind_param("siiisssbs", $nome, $pais_id, $tipo_refeicao_id, $categoria_id, $ingredientes, $preparo, $info_adicional, $usuario_id, $foto_blob, $foto_mime_type);
+        
+        // A nova assinatura do bind_param é "siiisssis" (o último 's' é para o nome da foto)
+        $stmt->bind_param("siiisssis", $nome, $pais_id, $tipo_refeicao_id, $categoria_id, $ingredientes, $preparo, $info_adicional, $usuario_id, $foto_nome);
 
         if ($stmt->execute()) {
             $mensagem = "<p style='color:green;'>Receita cadastrada com sucesso!</p>";
