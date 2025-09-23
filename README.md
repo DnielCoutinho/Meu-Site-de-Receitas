@@ -1,57 +1,52 @@
-# 🍝 CoutoPasta - Sistema de Receitas
+# 🍝 CoutoPasta
 
-## Projeto de Aplicação Web Completa
+## Descrição
+Sistema web para compartilhamento e busca de receitas culinárias, desenvolvido em PHP, HTML, CSS e JavaScript com banco de dados MySQL. A plataforma CoutoPasta permite que os usuários encontrem receitas por nome ou com base nos ingredientes que possuem em casa, filtrem por categoria e enviem suas próprias criações em uma interface moderna e responsiva.
 
-![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+## Funcionalidades Implementadas
 
-> **Sistema web completo e responsivo para gerenciamento de receitas, desenvolvido em PHP e MySQL com uma abordagem moderna e focada na usabilidade.**
+1.  **Gestão de Usuários** ✅
+    * ✅ Criar novo usuário (auto-cadastro)
+    * ✅ Entrar no sistema (login)
+    * ✅ Sair do sistema (logout)
+    * ✅ Alterar dados cadastrais (nome, e-mail)
+    * ✅ Alterar senha
+    * ✅ Recuperação de senha (simulada)
 
----
+2.  **Gestão de Receitas** ✅
+    * ✅ Cadastrar novas receitas com foto (para usuários logados)
+    * ✅ Visualizar detalhes completos de uma receita
+    * ✅ Editar receitas existentes (apenas o criador ou admin)
+    * ✅ Excluir receitas (apenas o criador ou admin)
+    * ✅ Listagem na página inicial com destaque aleatório e populares
+    * ✅ Página de listagem completa com filtros
 
-## 🎯 **SOBRE O PROJETO**
+3.  **Busca e Descoberta** ✅
+    * ✅ Buscar por nome da receita ou por um único ingrediente
+    * ✅ Buscar por múltiplos ingredientes (separados por vírgula)
+    * ✅ Exibição dos ingredientes que combinaram na busca
+    * ✅ Filtros por categoria diretamente na página inicial
 
-Este repositório contém o código-fonte completo do **CoutoPasta**, uma aplicação web funcional para um site de receitas. O projeto foi desenvolvido de forma interativa, passando por diversas fases de refatoração e melhorias, servindo como um estudo de caso prático para o desenvolvimento de aplicações PHP modernas.
+4.  **Funcionalidades de Administrador** ✅
+    * ✅ Permissão para editar e excluir qualquer receita do sistema
+    * ✅ Ferramenta de gerenciamento para visualizar e remover receitas duplicadas
+        * **Acesso:** `http://localhost/coutopasta/paginas/comidas/gerenciar_duplicatas.php`
 
-O sistema permite que usuários se cadastrem, publiquem, gerenciem e encontrem receitas de forma intuitiva.
+5.  **Sistema de Autenticação e Segurança** ✅
+    * ✅ Senhas criptografadas com `password_hash`
+    * ✅ Controle de sessão com `$_SESSION` do PHP
+    * ✅ Proteção de páginas restritas (ex: cadastrar/editar receita)
+    * ✅ Prevenção de SQL Injection com *Prepared Statements*
+    * ✅ Proteção contra XSS com `htmlspecialchars()`
 
-### **🌟 Características do Sistema:**
-- ✅ **Design Responsivo** - Abordagem Mobile-first, garantindo usabilidade em qualquer dispositivo
-- ✅ **PHP Estruturado** - Lógica de backend organizada e segura
-- ✅ **CSS3 Moderno** - Layouts com Grid e Flexbox, e design visualmente agradável
-- ✅ **JavaScript Interativo** - Menu mobile funcional e melhorias na experiência do usuário
-- ✅ **CRUD Completo** - Funcionalidades de Criar, Ler, Atualizar e Deletar para receitas
-- ✅ **Segurança Essencial** - Proteção contra ataques comuns (SQL Injection, XSS)
+6.  **Interface Responsiva (Mobile-First)** ✅
+    * ✅ Design moderno e amigável com CSS Flexbox e Grid
+    * ✅ Menu "hambúrguer" em formato overlay para uma melhor experiência mobile
+    * ✅ Mensagens de feedback para o usuário (sucesso, erro)
 
----
+## Estrutura do Projeto
 
-## 🎓 **OBJETIVOS DO PROJETO**
-
-### **Objetivo Geral:**
-Construir uma aplicação web dinâmica e completa com PHP e MySQL, demonstrando um ciclo de desenvolvimento que inclui criação, depuração de bugs, refatoração de código e implementação de novas funcionalidades com base no feedback do usuário.
-
-### **Objetivos Específicos:**
-1. **Compreender a arquitetura** de uma aplicação PHP com múltiplos arquivos
-2. **Aplicar operações CRUD** (Create, Read, Update, Delete) em um banco de dados MySQL
-3. **Implementar um sistema de autenticação** de usuários seguro (cadastro, login, sessões)
-4. **Construir layouts responsivos** e modernos com CSS (Grid/Flexbox)
-5. **Desenvolver uma busca inteligente** com múltiplos parâmetros
-6. **Aplicar boas práticas de segurança** em PHP e SQL
-7. **Refatorar e melhorar um código** existente para maior qualidade e manutenibilidade
-
-### **Competências Desenvolvidas:**
-- 🔧 **Técnicas:** PHP, MySQL, HTML5, CSS3, JavaScript ES6+, Design Responsivo
-- 🧠 **Cognitivas:** Análise de código, debugging, resolução de problemas complexos
-- 📂 **Arquitetura:** Organização de arquivos, separação de responsabilidades (backend/frontend)
-
----
-
-## 📁 **ESTRUTURA DO PROJETO**
-
-* `/coutoasta` (Pasta Raiz)
+* `/coutopasta` (Pasta Raiz)
     * `config.php` - Configuração do banco de dados e funções
     * `database.sql` - Script para criar a estrutura do banco
     * `data.sql` - Script com dados iniciais
@@ -83,54 +78,53 @@ Construir uma aplicação web dinâmica e completa com PHP e MySQL, demonstrando
     * `/uploads`
         * `/receitas` - Pasta para as imagens das receitas
 
----
+## Instalação
 
-## 🚀 **TECNOLOGIAS E RECURSOS**
+### Pré-requisitos
+* XAMPP ou similar (Apache + MySQL + PHP)
+* Navegador web (Chrome, Firefox, etc.)
 
-### **Stack Tecnológico:**
-- **Backend:** PHP
-- **Banco de Dados:** MySQL / MariaDB
-- **Servidor Local:** XAMPP (Apache)
-- **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
+### Passos para instalação:
 
-### **Funcionalidades Implementadas:**
-- 🍔 **Menu hambúrguer** responsivo em formato overlay
-- 🎲 **Destaque de receita aleatório** na página inicial
-- 🎠 **Carrossel horizontal** de receitas populares (CSS-driven)
-- ✅ **Validação de formulários** (ex: prevenção de receitas duplicadas)
-- 🔍 **Busca por múltiplos ingredientes** com exibição dos que combinaram
-- 📂 **Filtros de categoria** na página inicial (Server-side)
-- 🔐 **Sistema de autenticação completo** com recuperação de senha
+1.  **Copiar os Arquivos**
+    * Coloque a pasta `coutopasta` dentro do diretório `htdocs` da sua instalação do XAMPP (geralmente `C:\xampp\htdocs\`).
 
----
+2.  **Configurar o Banco de Dados**
+    * Inicie os módulos Apache e MySQL no painel de controle do XAMPP.
+    * Acesse o phpMyAdmin em `http://localhost/phpmyadmin`.
+    * Crie um novo banco de dados chamado `coutopasta_receitas`.
+    * Selecione o banco recém-criado, vá na aba "Importar" e execute o arquivo `database.sql` para criar as tabelas.
+    * Importe novamente, desta vez o arquivo `data.sql`, para adicionar os dados de exemplo.
 
-## ⚡ **COMO USAR ESTE PROJETO**
+3.  **Configurar a Conexão**
+    * Verifique o arquivo `config.php`. As credenciais padrão (`host=localhost`, `user=root`, `password=""`) já estão configuradas. Altere apenas se sua configuração for diferente.
 
-### **Para Executar Localmente:**
-1.  **Copie os Arquivos:** Coloque a pasta `coutopasta` no diretório `htdocs` do seu XAMPP.
-2.  **Crie o Banco de Dados:** Use o phpMyAdmin para criar um banco de dados chamado `coutopasta_receitas`.
-3.  **Importe os Dados:**
-    * Primeiro, importe o arquivo `database.sql` para criar as tabelas.
-    * Em seguida, importe `data.sql` para popular com dados de exemplo.
-4.  **Verifique a Configuração:** O arquivo `config.php` já está configurado para o ambiente padrão do XAMPP (`root`, sem senha).
-5.  **Verifique as Permissões:** Garanta que a pasta `uploads/receitas/` tenha permissão de escrita.
-6.  **Acesse:** Abra o navegador e acesse `http://localhost/coutopasta/`.
+4.  **Permissões de Pasta**
+    * Garanta que a pasta `uploads/receitas/` tenha permissão de escrita para que o PHP possa salvar as imagens.
 
----
+5.  **Acessar a Aplicação**
+    * Abra o navegador e acesse: `http://localhost/coutopasta/`
 
-## 📊 **CARACTERÍSTICAS DE QUALIDADE**
+## Tecnologias Utilizadas
 
-### **Segurança:**
-- 🔐 **Senhas Criptografadas:** Uso de `password_hash()` para total segurança das senhas.
-- 🛡️ **Prevenção de SQL Injection:** Uso exclusivo de *Prepared Statements* em todas as interações com o banco.
-- ✒️ **Prevenção de XSS:** Tratamento de todas as saídas de dados com `htmlspecialchars()`.
+* **Backend:** PHP
+* **Frontend:** HTML5, CSS3 (Flexbox, Grid), JavaScript
+* **Banco de dados:** MySQL / MariaDB
+* **Design:** Mobile-First, Design Responsivo
 
-### **Performance:**
-- ⚡ **Carregamento Rápido:** A página inicial carrega um número limitado de receitas para garantir a velocidade.
-- 📱 **Mobile-First:** O CSS é otimizado para carregar primeiro os estilos essenciais para dispositivos móveis.
+## Estrutura do Banco de Dados
 
-### **Acessibilidade:**
-- ♿ **HTML Semântico:** Uso correto de tags HTML para melhor estrutura e compatibilidade com leitores de tela.
-- 🎨 **Contraste de Cores:** Paleta de cores escolhida para garantir boa legibilidade.
+* **Tabela `usuarios`**: `id`, `nome`, `email`, `senha`, `is_admin`
+* **Tabela `receitas`**: `id`, `nome`, `ingredientes`, `preparo`, `info_adicional`, `foto`, `usuario_id`, `pais_id`, `tipo_refeicao_id`, `categoria_id`
+* **Tabela `categorias`**: `id`, `nome`
+* **Tabela `paises`**: `id`, `nome`
+* **Tabela `tipos_refeicao`**: `id`, `nome`
 
----
+## Próximos Desenvolvimentos
+
+As próximas funcionalidades a serem implementadas podem incluir:
+
+* Sistema de avaliação (estrelas) e comentários nas receitas.
+* Página de perfil do usuário com a listagem das receitas que ele cadastrou.
+* Paginação na seção "Todas as Receitas" para melhor performance.
+* Filtros avançados combinando múltiplos critérios (país + categoria, etc.).
