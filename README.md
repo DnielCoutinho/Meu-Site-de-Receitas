@@ -1,126 +1,136 @@
-# Meu Site de Receitas
+# 🍝 CoutoPasta - Sistema de Receitas
 
-## Descrição
-Sistema web para compartilhamento e busca de receitas culinárias, desenvolvido em PHP, HTML, CSS e JavaScript com banco de dados MySQL. A plataforma permite que os usuários encontrem receitas com base nos ingredientes que possuem em casa, além de poderem cadastrar e visualizar pratos de diversas culinárias.
+## Projeto de Aplicação Web Completa
 
-## Funcionalidades Implementadas
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
-1.  **Gestão de Usuários** ✅
-    *   ✅ Criar novo usuário (auto-cadastro)
-    *   ✅ Entrar no sistema (login)
-    *   ✅ Sair do sistema (logout)
-    *   ✅ Alterar dados cadastrais
-    *   ✅ Alterar senha
+> **Sistema web completo e responsivo para gerenciamento de receitas, desenvolvido em PHP e MySQL com uma abordagem moderna e focada na usabilidade.**
 
-2.  **Gestão de Receitas** ✅
-    *   ✅ Cadastrar novas receitas (para usuários logados)
-    *   ✅ Visualizar detalhes completos de uma receita
-    *   ✅ Listar receitas na página inicial
+---
 
-3.  **Busca Inteligente** ✅
-    *   ✅ Buscar receitas com base nos ingredientes disponíveis
+## 🎯 **SOBRE O PROJETO**
 
-4.  **Sistema de Autenticação** ✅
-    *   ✅ Senhas criptografadas com `password_hash`
-    *   ✅ Controle de sessão com `$_SESSION` do PHP
-    *   ✅ Proteção de páginas restritas
+Este repositório contém o código-fonte completo do **CoutoPasta**, uma aplicação web funcional para um site de receitas. O projeto foi desenvolvido de forma interativa, passando por diversas fases de refatoração e melhorias, servindo como um estudo de caso prático para o desenvolvimento de aplicações PHP modernas.
 
-5.  **Interface Responsiva** ✅
-    *   ✅ Design moderno e amigável com CSS Flexbox e Grid
-    *   ✅ Mensagens de feedback para o usuário
+O sistema permite que usuários se cadastrem, publiquem, gerenciem e encontrem receitas de forma intuitiva.
 
-## Estrutura do Projeto
+### **🌟 Características do Sistema:**
+- ✅ **Design Responsivo** - Abordagem Mobile-first, garantindo usabilidade em qualquer dispositivo
+- ✅ **PHP Estruturado** - Lógica de backend organizada e segura
+- ✅ **CSS3 Moderno** - Layouts com Grid e Flexbox, e design visualmente agradável
+- ✅ **JavaScript Interativo** - Menu mobile funcional e melhorias na experiência do usuário
+- ✅ **CRUD Completo** - Funcionalidades de Criar, Ler, Atualizar e Deletar para receitas
+- ✅ **Segurança Essencial** - Proteção contra ataques comuns (SQL Injection, XSS)
 
-```
-coutopasta/
-├── css/
-│   └── style.css              # Folha de estilos principal
-├── js/
-│   └── script.js              # Interatividade do frontend
-├── paginas/
-│   ├── comidas/
-│   │   ├── buscar_por_ingredientes.php # Página de busca por ingredientes
-│   │   ├── cadastrar_receita.php       # Formulário de cadastro de receita
-│   │   └── visualizar_receita.php      # Página de detalhes da receita
-│   ├── includes/
-│   │   ├── header.php         # Cabeçalho e menu de navegação
-│   │   └── footer.php         # Rodapé
-│   └── usuarios/
-│       ├── alterar_dados.php  # Edição de perfil do usuário
-│       ├── alterar_senha.php  # Alteração de senha
-│       ├── criar_usuario.php  # Página de cadastro de usuário
-│       ├── login.php          # Página de login
-│       └── logout.php         # Script de logout
-├── config.php                 # Configuração do banco de dados
-├── dados_iniciais.sql         # Script SQL com receitas de exemplo
-├── index.php                  # Página inicial com listagem de receitas
-└── README.md                  # Este arquivo
-```
+---
 
-## Instalação
+## 🎓 **OBJETIVOS DO PROJETO**
 
-### Pré-requisitos
-*   XAMPP ou similar (Apache + MySQL + PHP 7.4+)
-*   Navegador web (Chrome, Firefox, etc.)
+### **Objetivo Geral:**
+Construir uma aplicação web dinâmica e completa com PHP e MySQL, demonstrando um ciclo de desenvolvimento que inclui criação, depuração de bugs, refatoração de código e implementação de novas funcionalidades com base no feedback do usuário.
 
-### Passos para instalação:
+### **Objetivos Específicos:**
+1. **Compreender a arquitetura** de uma aplicação PHP com múltiplos arquivos
+2. **Aplicar operações CRUD** (Create, Read, Update, Delete) em um banco de dados MySQL
+3. **Implementar um sistema de autenticação** de usuários seguro (cadastro, login, sessões)
+4. **Construir layouts responsivos** e modernos com CSS (Grid/Flexbox)
+5. **Desenvolver uma busca inteligente** com múltiplos parâmetros
+6. **Aplicar boas práticas de segurança** em PHP e SQL
+7. **Refatorar e melhorar um código** existente para maior qualidade e manutenibilidade
 
-1.  **Clonar o Repositório**
-    *   Coloque a pasta `coutopasta` dentro do diretório `htdocs` da sua instalação do XAMPP (geralmente `C:\xampp\htdocs\`).
+### **Competências Desenvolvidas:**
+- 🔧 **Técnicas:** PHP, MySQL, HTML5, CSS3, JavaScript ES6+, Design Responsivo
+- 🧠 **Cognitivas:** Análise de código, debugging, resolução de problemas complexos
+- 📂 **Arquitetura:** Organização de arquivos, separação de responsabilidades (backend/frontend)
 
-2.  **Configurar o Banco de Dados**
-    *   Inicie os módulos Apache e MySQL no painel de controle do XAMPP.
-    *   Acesse o phpMyAdmin em `http://localhost/phpmyadmin`.
-    *   Crie um novo banco de dados chamado `meu_site_de_receitas`.
-    *   Selecione o banco recém-criado e use a aba "Importar" para executar o script `dados_iniciais.sql`. Isso criará as tabelas e adicionará as receitas de exemplo.
+---
 
-3.  **Configurar a Conexão**
-    *   Verifique o arquivo `config.php`. As credenciais padrão do XAMPP (`host=localhost`, `user=root`, `password=vazio`) já estão configuradas. Altere apenas se sua configuração for diferente.
+## 📁 **ESTRUTURA DO PROJETO**
 
-4.  **Acessar a Aplicação**
-    *   Abra o navegador e acesse: `http://localhost/coutopasta/`
+* `/coutoasta` (Pasta Raiz)
+    * `config.php` - Configuração do banco de dados e funções
+    * `database.sql` - Script para criar a estrutura do banco
+    * `data.sql` - Script com dados iniciais
+    * `index.php` - Página inicial com destaques e filtros
+    * `README.md` - Documentação do projeto
+    * `/css`
+        * `style.css` - Folha de estilos principal (Mobile-First)
+    * `/js`
+        * `script.js` - Interatividade do frontend (Menu)
+    * `/paginas`
+        * `/comidas`
+            * `buscar_receitas.php` - Página de resultados da busca
+            * `cadastrar_receita.php` - Formulário de cadastro
+            * `editar_receita.php` - Formulário de edição
+            * `excluir_receita.php` - Script de exclusão
+            * `gerenciar_duplicatas.php` - Ferramenta do Admin
+            * `visualizar_receita.php` - Página de detalhes da receita
+        * `/includes`
+            * `header.php` - Cabeçalho e menu de navegação
+            * `footer.php` - Rodapé
+        * `/usuarios`
+            * `alterar_dados.php` - Edição de perfil
+            * `alterar_senha.php` - Alteração de senha
+            * `criar_usuario.php` - Página de cadastro de usuário
+            * `login.php` - Página de login
+            * `logout.php` - Script de logout
+            * `recuperar_senha.php` - Formulário de recuperação
+            * `redefinir_senha.php` - Formulário para nova senha
+    * `/uploads`
+        * `/receitas` - Pasta para as imagens das receitas
 
-## Como Usar
+---
 
-*   **Para novos usuários:**
-    1.  Acesse a página inicial.
-    2.  Clique em "Criar Usuário" no menu de navegação.
-    3.  Preencha o formulário de cadastro.
-    4.  Faça login com suas novas credenciais.
+## 🚀 **TECNOLOGIAS E RECURSOS**
 
-*   **Funcionalidades disponíveis:**
-    *   **Página Inicial:** Explore receitas em destaque.
-    *   **Buscar por Ingredientes:** Digite os ingredientes que você tem em casa (separados por vírgula) para encontrar receitas compatíveis.
-    *   **Cadastrar Receita:** Adicione suas próprias receitas ao site (requer login).
-    *   **Meu Perfil:** Edite seus dados pessoais e altere sua senha.
+### **Stack Tecnológico:**
+- **Backend:** PHP
+- **Banco de Dados:** MySQL / MariaDB
+- **Servidor Local:** XAMPP (Apache)
+- **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
 
-## Recursos de Segurança
+### **Funcionalidades Implementadas:**
+- 🍔 **Menu hambúrguer** responsivo em formato overlay
+- 🎲 **Destaque de receita aleatório** na página inicial
+- 🎠 **Carrossel horizontal** de receitas populares (CSS-driven)
+- ✅ **Validação de formulários** (ex: prevenção de receitas duplicadas)
+- 🔍 **Busca por múltiplos ingredientes** com exibição dos que combinaram
+- 📂 **Filtros de categoria** na página inicial (Server-side)
+- 🔐 **Sistema de autenticação completo** com recuperação de senha
 
-*   **Criptografia de senhas:** Uso da função `password_hash()` do PHP para proteger as senhas dos usuários.
-*   **Prevenção de SQL Injection:** Uso de *Prepared Statements* em todas as consultas ao banco de dados.
-*   **Proteção contra XSS:** Uso da função `htmlspecialchars()` para tratar todas as saídas de dados no HTML.
+---
 
-## Tecnologias Utilizadas
+## ⚡ **COMO USAR ESTE PROJETO**
 
-*   **Backend:** PHP 7.4+
-*   **Frontend:** HTML5, CSS3, JavaScript
-*   **Banco de dados:** MySQL
-*   **Design:** CSS Flexbox, CSS Grid, Design Responsivo
+### **Para Executar Localmente:**
+1.  **Copie os Arquivos:** Coloque a pasta `coutopasta` no diretório `htdocs` do seu XAMPP.
+2.  **Crie o Banco de Dados:** Use o phpMyAdmin para criar um banco de dados chamado `coutopasta_receitas`.
+3.  **Importe os Dados:**
+    * Primeiro, importe o arquivo `database.sql` para criar as tabelas.
+    * Em seguida, importe `data.sql` para popular com dados de exemplo.
+4.  **Verifique a Configuração:** O arquivo `config.php` já está configurado para o ambiente padrão do XAMPP (`root`, sem senha).
+5.  **Verifique as Permissões:** Garanta que a pasta `uploads/receitas/` tenha permissão de escrita.
+6.  **Acesse:** Abra o navegador e acesse `http://localhost/coutopasta/`.
 
-## Estrutura do Banco de Dados
+---
 
-*   **Tabela `usuarios`**: `id`, `nome`, `email`, `senha`
-*   **Tabela `categorias`**: `id`, `nome`
-*   **Tabela `subcategorias`**: `id`, `categoria_id`, `nome`
-*   **Tabela `comidas`**: `id`, `nome`, `categoria_id`, `subcategoria_id`, `ingredientes`, `preparo`, `usuario_id`
+## 📊 **CARACTERÍSTICAS DE QUALIDADE**
 
-## Próximos Desenvolvimentos
+### **Segurança:**
+- 🔐 **Senhas Criptografadas:** Uso de `password_hash()` para total segurança das senhas.
+- 🛡️ **Prevenção de SQL Injection:** Uso exclusivo de *Prepared Statements* em todas as interações com o banco.
+- ✒️ **Prevenção de XSS:** Tratamento de todas as saídas de dados com `htmlspecialchars()`.
 
-As próximas funcionalidades a serem implementadas incluem:
+### **Performance:**
+- ⚡ **Carregamento Rápido:** A página inicial carrega um número limitado de receitas para garantir a velocidade.
+- 📱 **Mobile-First:** O CSS é otimizado para carregar primeiro os estilos essenciais para dispositivos móveis.
 
-*   Sistema de avaliação (estrelas) e comentários nas receitas.
-*   Adicionar imagens reais para cada receita.
-*   Busca por nome da receita.
-*   Página de perfil do usuário com as receitas que ele cadastrou.
-*   Filtro de receitas por categoria e subcategoria.
+### **Acessibilidade:**
+- ♿ **HTML Semântico:** Uso correto de tags HTML para melhor estrutura e compatibilidade com leitores de tela.
+- 🎨 **Contraste de Cores:** Paleta de cores escolhida para garantir boa legibilidade.
 
+---
