@@ -14,7 +14,7 @@ Sistema web para compartilhamento e busca de receitas culinárias, desenvolvido 
 
 2.  **Gestão de Receitas** ✅
     *   ✅ Cadastrar novas receitas (para usuários logados)
-    *   ✅ Visualizar detalhes completos de uma receita
+    *   ✅ Visualizar detalhes completos de uma receita, incluindo informações adicionais
     *   ✅ Listar receitas na página inicial
 
 3.  **Busca Inteligente** ✅
@@ -33,13 +33,15 @@ Sistema web para compartilhamento e busca de receitas culinárias, desenvolvido 
 
 ```
 coutopasta/
+├── api/
+│   └── get_receitas.php       # API para buscar receitas
 ├── css/
 │   └── style.css              # Folha de estilos principal
 ├── js/
 │   └── script.js              # Interatividade do frontend
 ├── paginas/
 │   ├── comidas/
-│   │   ├── buscar_por_ingredientes.php # Página de busca por ingredientes
+│   │   ├── buscar_receitas.php         # Página de busca por receitas
 │   │   ├── cadastrar_receita.php       # Formulário de cadastro de receita
 │   │   └── visualizar_receita.php      # Página de detalhes da receita
 │   ├── includes/
@@ -51,8 +53,15 @@ coutopasta/
 │       ├── criar_usuario.php  # Página de cadastro de usuário
 │       ├── login.php          # Página de login
 │       └── logout.php         # Script de logout
+├── scripts/
+│   ├── padronizar_e_remover_duplicatas.php # Script para padronizar e remover duplicatas
+│   ├── padronizar_nomes_receitas.php # Script para padronizar nomes de receitas
+│   ├── remover_duplicatas_receitas.php # Script para remover receitas duplicadas
+│   └── remover_fotos_receitas.php # Script para remover fotos de receitas
+├── uploads/
+│   └── receitas/              # Armazenamento de fotos de receitas
 ├── config.php                 # Configuração do banco de dados
-├── dados_iniciais.sql         # Script SQL com receitas de exemplo
+├── data.sql                   # Script SQL com a estrutura do banco e dados de exemplo
 ├── index.php                  # Página inicial com listagem de receitas
 └── README.md                  # Este arquivo
 ```
@@ -111,8 +120,9 @@ coutopasta/
 
 *   **Tabela `usuarios`**: `id`, `nome`, `email`, `senha`
 *   **Tabela `categorias`**: `id`, `nome`
-*   **Tabela `subcategorias`**: `id`, `categoria_id`, `nome`
-*   **Tabela `comidas`**: `id`, `nome`, `categoria_id`, `subcategoria_id`, `ingredientes`, `preparo`, `usuario_id`
+*   **Tabela `tipos_refeicao`**: `id`, `nome`
+*   **Tabela `paises`**: `id`, `nome`
+*   **Tabela `receitas`**: `id`, `nome`, `ingredientes`, `preparo`, `foto`, `info_adicional`, `usuario_id`, `pais_id`, `tipo_refeicao_id`, `categoria_id`
 
 ## Próximos Desenvolvimentos
 

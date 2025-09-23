@@ -1,100 +1,114 @@
 <?php
-require_once('paginas/includes/header.php');
-require_once('config.php'); // Conexão com o banco de dados
+// Habilitar a exibição de erros para depuração
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-// Busca uma receita aleatória para a seção de destaque (Hero Section)
-$featuredRecipe = null;
-$sqlFeatured = "SELECT id, nome, foto FROM receitas WHERE foto IS NOT NULL AND foto != '' ORDER BY RAND() LIMIT 1";
-$resultFeatured = $conn->query($sqlFeatured);
+require_once('paginas/includes/header.php'); 
+require_once('config.php');
 
-if ($resultFeatured && $resultFeatured->num_rows > 0) {
-    $featuredRecipe = $resultFeatured->fetch_assoc();
+// 1. Buscar uma receita aleatória para o destaque (hero)
+$stmt_hero = $conn->prepare("SELECT * FROM receitas ORDER BY RAND() LIMIT 1");
+$stmt_hero->execute();
+$result_hero = $stmt_hero->get_result();
+$receita_hero = $result_hero->fetch_assoc();
+$stmt_hero->close();
+
+// 2. Buscar as 5 receitas mais recentes para a seção de populares (excluindo a do hero)
+$stmt_populares = $conn->prepare("SELECT * FROM receitas WHERE id != ? ORDER BY id DESC LIMIT 5");
+$hero_id = $receita_hero['id'] ?? 0;
+$stmt_populares->bind_param("i", $hero_id);
+$stmt_populares->execute();
+$result_populares = $stmt_populares->get_result();
+
+// 3. Buscar todas as categorias para criar os botões de filtro
+$categorias_result = $conn->query("SELECT id, nome FROM categorias ORDER BY nome");
+
+// 4. Buscar as receitas para o grid principal, aplicando o filtro se houver
+$filtro_categoria_id = null;
+$sql_todas = "SELECT * FROM receitas";
+if (isset($_GET['categoria_id']) && is_numeric($_GET['categoria_id'])) {
+    $filtro_categoria_id = intval($_GET['categoria_id']);
+    $sql_todas .= " WHERE categoria_id = ?";
 }
+$sql_todas .= " ORDER BY id DESC LIMIT 24"; // Limita a 24 receitas no grid principal
 
-// Busca receitas do banco de dados para exibir na página inicial (grade)
-$receitas = [];
-// Query compatível para buscar 1 receita por nome, incluindo a foto.
-$sql = "SELECT r1.id, r1.nome, r1.foto 
-        FROM receitas r1 
-        INNER JOIN (SELECT MAX(id) as id FROM receitas GROUP BY nome) r2 ON r1.id = r2.id 
-        ORDER BY r1.id DESC LIMIT 9";
-$result = $conn->query($sql);
-
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $receitas[] = $row;
-    }
+$stmt_todas = $conn->prepare($sql_todas);
+if ($filtro_categoria_id) {
+    $stmt_todas->bind_param("i", $filtro_categoria_id);
 }
-
-$conn->close();
+$stmt_todas->execute();
+$todas_receitas_result = $stmt_todas->get_result();
 ?>
 
-<?php if ($featuredRecipe): ?>
-<section class="hero-section" style="background-image: url('/coutopasta/uploads/receitas/<?php echo htmlspecialchars($featuredRecipe['foto']); ?>');">
-    <div class="hero-content">
-        <h1><?php echo htmlspecialchars($featuredRecipe['nome']); ?></h1>
-        <p>Descubra sabores que contam histórias.</p>
-        <a href="/coutopasta/paginas/comidas/visualizar_receita.php?id=<?php echo $featuredRecipe['id']; ?>" class="btn">Ver Receita</a>
-    </div>
-</section>
-<?php endif; ?>
-
+<?php if ($receita_hero): ?>
 <div class="container">
-    <section id="receitas" class="fade-in-section">
-        <h2>Receitas Populares</h2>
-        <div class="receitas-grid">
-            <?php if (!empty($receitas)): ?>
-                <?php foreach ($receitas as $receita): ?>
-                    <article class="receita-card">
-                        <?php if (!empty($receita['foto'])): 
-                            $grid_foto_url = $receita['foto'];
-                            if (filter_var($grid_foto_url, FILTER_VALIDATE_URL)) {
-                                $grid_image_path = htmlspecialchars($grid_foto_url);
-                            }
-                            else {
-                                $grid_image_path = '/coutopasta/uploads/receitas/' . htmlspecialchars($grid_foto_url);
-                            }
-                        ?>
-                            <img src="<?php echo $grid_image_path; ?>" alt="Foto de <?php echo htmlspecialchars($receita['nome']); ?>">
-                        <?php else: ?>
-                            <img src="/coutopasta/assets/placeholder.svg" alt="Imagem não disponível">
-                        <?php endif; ?>
-                        <div class="receita-card-content">
-                            <h3><?php echo htmlspecialchars($receita['nome']); ?></h3>
-                            <a href="/coutopasta/paginas/comidas/visualizar_receita.php?id=<?php echo $receita['id']; ?>" class="btn">Ver Receita</a>
-                        </div>
-                    </article>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>Nenhuma receita encontrada. Que tal cadastrar a primeira?</p>
-            <?php endif; ?>
-        </div>
-    </section>
-
-    <!-- Seção de Depoimentos (a ser implementada com JS) -->
-    <section id="depoimentos" class="fade-in-section">
-        <h2>O que nossos cozinheiros dizem</h2>
-        <div class="testimonial-slider">
-            <!-- Depoimentos serão inseridos aqui via JS -->
-            <div class="testimonial">
-                <p>"Este site transformou minha cozinha! As receitas são fáceis de seguir e deliciosas."</p>
-                <h4>- Ana Clara</h4>
-            </div>
-            <div class="testimonial">
-                <p>"Encontrei pratos que me lembram a infância. Uma verdadeira viagem gastronômica!"</p>
-                <h4>- Bruno Martins</h4>
-            </div>
-        </div>
-    </section>
-
-    <!-- Seção de Filtros -->
-    <section id="filtros" class="fade-in-section">
-        <h2>Filtre por Categoria</h2>
-        <div class="filter-container">
-            <button class="filter-btn active" data-category="all">Todas</button>
-            <!-- Categorias serão inseridas aqui -->
+    <section class="hero-section" style="background-image: url('<?php echo get_foto_src($receita_hero['foto']); ?>');">
+        <div class="hero-content">
+            <h1><?php echo htmlspecialchars($receita_hero['nome']); ?></h1>
+            <p>Descubra sabores que contam histórias.</p>
+            <a href="/coutopasta/paginas/comidas/visualizar_receita.php?id=<?php echo $receita_hero['id']; ?>" class="btn">Ver Receita</a>
         </div>
     </section>
 </div>
+<?php endif; ?>
 
-<?php require_once('paginas/includes/footer.php'); ?>
+<main class="container">
+
+    <?php if ($result_populares->num_rows > 0): ?>
+    <section class="popular-recipes">
+        <h2>Receitas Populares</h2>
+        <div class="popular-grid">
+            <?php while($receita = $result_populares->fetch_assoc()): ?>
+                <article class="receita-card">
+                    <a href="/coutopasta/paginas/comidas/visualizar_receita.php?id=<?php echo $receita['id']; ?>" style="text-decoration: none; color: inherit;">
+                        <img src="<?php echo get_foto_src($receita['foto']); ?>" alt="Foto de <?php echo htmlspecialchars($receita['nome']); ?>">
+                        <div class="receita-card-content">
+                            <h3><?php echo htmlspecialchars($receita['nome']); ?></h3>
+                            <span class="btn" style="width: 100%; margin-top: 1rem;">Ver Receita</span>
+                        </div>
+                    </a>
+                </article>
+            <?php endwhile; ?>
+        </div>
+    </section>
+    <?php endif; ?>
+
+    <section class="all-recipes">
+        <h2>Todas as Receitas</h2>
+
+        <div class="filter-container">
+            <a href="/coutopasta/" class="filter-btn <?php echo !$filtro_categoria_id ? 'active' : ''; ?>">Todas</a>
+            <?php while($cat = $categorias_result->fetch_assoc()): ?>
+                <a href="/coutopasta/?categoria_id=<?php echo $cat['id']; ?>" class="filter-btn <?php echo ($filtro_categoria_id == $cat['id']) ? 'active' : ''; ?>">
+                    <?php echo htmlspecialchars($cat['nome']); ?>
+                </a>
+            <?php endwhile; ?>
+        </div>
+
+        <div class="receitas-grid" style="margin-top: 2rem;">
+             <?php while($receita = $todas_receitas_result->fetch_assoc()): ?>
+                <article class="receita-card">
+                    <a href="/coutopasta/paginas/comidas/visualizar_receita.php?id=<?php echo $receita['id']; ?>" style="text-decoration: none; color: inherit;">
+                        <img src="<?php echo get_foto_src($receita['foto']); ?>" alt="Foto de <?php echo htmlspecialchars($receita['nome']); ?>">
+                        <div class="receita-card-content">
+                            <h3><?php echo htmlspecialchars($receita['nome']); ?></h3>
+                            <span class="btn" style="width: 100%; margin-top: 1rem;">Ver Receita</span>
+                        </div>
+                    </a>
+                </article>
+            <?php endwhile; ?>
+        </div>
+         <?php if ($todas_receitas_result->num_rows === 0): ?>
+            <p style="text-align: center; font-size: 1.2rem; color: var(--grey-text);">Nenhuma receita encontrada para esta categoria.</p>
+        <?php endif; ?>
+    </section>
+
+</main>
+
+<?php 
+$stmt_populares->close();
+$stmt_todas->close();
+$conn->close();
+require_once('paginas/includes/footer.php'); 
+?>

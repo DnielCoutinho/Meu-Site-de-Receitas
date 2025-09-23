@@ -4,26 +4,27 @@ include __DIR__ . '/../../config.php';
 ?>
 
 <div class="container">
-    <h1>Resultados da Busca</h1>
+    <div class="search-header">
+        <h1>Resultados da Busca</h1>
+        <?php if (isset($_GET['q']) && !empty(trim($_GET['q']))): ?>
+            <p class="termo-busca">Você buscou por: <strong>"<?php echo htmlspecialchars(trim($_GET['q'])); ?>"</strong></p>
+        <?php endif; ?>
+    </div>
 
     <div class="lista-receitas">
         <?php
         if (isset($_GET['q']) && !empty(trim($_GET['q']))) {
             $query = trim($_GET['q']);
-            echo "<p class='termo-busca'>Você buscou por: <strong>" . htmlspecialchars($query) . "</strong></p>";
-
             $receitas_encontradas = [];
 
-            // Se a busca contém vírgula, usamos a lógica de múltiplos ingredientes
+            // Lógica para busca por múltiplos ingredientes (com vírgula)
             if (strpos($query, ',') !== false) {
                 $ingredientes_busca = array_map('trim', explode(',', strtolower($query)));
                 $ingredientes_busca = array_filter($ingredientes_busca);
                 $ingredientes_busca = array_unique($ingredientes_busca);
 
                 if (!empty($ingredientes_busca)) {
-                    $conditions = [];
-                    $params = [];
-                    $types = '';
+                    $conditions = []; $params = []; $types = '';
                     foreach ($ingredientes_busca as $ingrediente) {
                         $conditions[] = "ingredientes LIKE ?";
                         $params[] = "%" . $ingrediente . "%";
@@ -40,14 +41,19 @@ include __DIR__ . '/../../config.php';
 
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
+                                // --- LÓGICA ATUALIZADA PARA ENCONTRAR NOMES ---
                                 $matches = 0;
+                                $matching_ingredients = [];
                                 $ingredientes_receita = strtolower($row['ingredientes']);
-                                foreach ($ingredientes_busca as $ingrediente) {
-                                    if (strpos($ingredientes_receita, $ingrediente) !== false) {
+
+                                foreach ($ingredientes_busca as $ingrediente_buscado) {
+                                    if (strpos($ingredientes_receita, $ingrediente_buscado) !== false) {
                                         $matches++;
+                                        $matching_ingredients[] = ucfirst($ingrediente_buscado); // Adiciona o nome do ingrediente à lista
                                     }
                                 }
                                 $row['matches'] = $matches;
+                                $row['matching_ingredients'] = $matching_ingredients; // Armazena a lista de nomes
                                 $receitas_encontradas[$row['id']] = $row;
                             }
                         }
@@ -55,26 +61,16 @@ include __DIR__ . '/../../config.php';
                     }
                 }
                 
+                // Ordena os resultados pelo número de ingredientes que combinaram
                 if (!empty($receitas_encontradas)) {
-                    // Agrupar por nome para remover duplicatas visuais
-                    $unique_by_name = [];
-                    foreach($receitas_encontradas as $receita) {
-                        if (!isset($unique_by_name[$receita['nome']]) || $receita['matches'] > $unique_by_name[$receita['nome']]['matches']) {
-                           $unique_by_name[$receita['nome']] = $receita;
-                        }
-                    }
-                    $receitas_encontradas = array_values($unique_by_name);
-
-                    usort($receitas_encontradas, function($a, $b) {
+                    uasort($receitas_encontradas, function($a, $b) {
                         return $b['matches'] <=> $a['matches'];
                     });
                 }
 
-            // Senão, fazemos uma busca simples por nome ou ingrediente único
-            } else {
+            } else { // Lógica para busca simples (um termo)
                 $search_term = "%$query%";
-                // Adicionado GROUP BY nome para evitar mostrar receitas com nomes idênticos
-                $stmt = $conn->prepare("SELECT MAX(id) as id, nome, foto FROM receitas WHERE nome LIKE ? OR ingredientes LIKE ? GROUP BY nome");
+                $stmt = $conn->prepare("SELECT id, nome, foto FROM receitas WHERE nome LIKE ? OR ingredientes LIKE ?");
                 if ($stmt) {
                     $stmt->bind_param("ss", $search_term, $search_term);
                     $stmt->execute();
@@ -90,52 +86,44 @@ include __DIR__ . '/../../config.php';
 
             // Lógica de exibição unificada
             if (!empty($receitas_encontradas)) {
-                echo "<div class='grid-receitas'>";
+                echo "<div class='receitas-grid search-grid'>";
                 foreach ($receitas_encontradas as $receita) {
-                    echo "<div class='card-receita'>";
-                    echo "<a href='visualizar_receita.php?id=" . $receita['id'] . "'>";
-                    if (!empty($receita['foto'])) {
-                        echo "<img src='/coutopasta/uploads/receitas/" . htmlspecialchars($receita['foto']) . "' alt='" . htmlspecialchars($receita['nome']) . "'>";
-                    } else {
-                        echo "<img src='/coutopasta/assets/placeholder.svg' alt='Imagem não disponível'>";
-                    }
-                    echo "<h3>" . htmlspecialchars($receita['nome']) . "</h3>";
-                    if (isset($receita['matches'])) {
-                        echo "<p class='matches'>Combina com <strong>" . $receita['matches'] . "</strong> dos seus ingredientes.</p>";
-                    }
-                    echo "</a>";
-                    echo "</div>";
+                    echo "<article class='receita-card'>"; // Usando a mesma classe de card para consistência
+                        echo "<a href='visualizar_receita.php?id=" . $receita['id'] . "' style='text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;'>";
+                            echo "<img src='" . get_foto_src($receita['foto']) . "' alt='" . htmlspecialchars($receita['nome']) . "'>";
+                            
+                            // Container do conteúdo para alinhamento com flexbox
+                            echo "<div class='receita-card-content'>";
+                                echo "<h3>" . htmlspecialchars($receita['nome']) . "</h3>";
+                                
+                                // Seção de ingredientes (será empurrada para baixo)
+                                if (isset($receita['matches']) && $receita['matches'] > 0) {
+                                    echo "<div class='match-info'>";
+                                        echo "<p class='match-count'>Combina com <strong>" . $receita['matches'] . "</strong> dos seus ingredientes:</p>";
+                                        echo "<div class='match-tags'>";
+                                        foreach ($receita['matching_ingredients'] as $ing) {
+                                            echo "<span class='tag'>" . htmlspecialchars($ing) . "</span>";
+                                        }
+                                        echo "</div>";
+                                    echo "</div>";
+                                }
+
+                            echo "</div>";
+                        echo "</a>";
+                    echo "</article>";
                 }
                 echo "</div>";
             } else {
-                echo "<p>Nenhuma receita encontrada para o termo \"" . htmlspecialchars($query) . "\".</p>";
+                echo "<p class='no-results'>Nenhuma receita encontrada para o termo \"" . htmlspecialchars($query) . "\".</p>";
             }
 
         } else {
-            echo "<p>Por favor, digite um termo para buscar.</p>";
+            echo "<p class='no-results'>Por favor, digite um termo para buscar.</p>";
         }
         $conn->close();
         ?>
     </div>
 </div>
-
-<style>
-.termo-busca {
-    margin-bottom: 2rem;
-    font-size: 1.2rem;
-    text-align: center;
-}
-.grid-receitas {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-}
-.card-receita .matches {
-    color: #28a745;
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-</style>
 
 <?php
 include __DIR__ . '/../includes/footer.php';

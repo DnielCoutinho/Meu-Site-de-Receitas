@@ -41,6 +41,7 @@ session_start();
                 <span class="bar"></span>
                 <span class="bar"></span>
             </button>
+            
         </div>
     </header>
-    <main>
+    <main class="container">
