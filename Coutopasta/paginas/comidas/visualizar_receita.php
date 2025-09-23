@@ -143,6 +143,8 @@ if ($result->num_rows > 0) {
             <p><?php echo nl2br(htmlspecialchars($receita['info_adicional'])); ?></p>
         </div>
         <?php endif; ?>
+
+        
     </div>
 <?php
 } else {

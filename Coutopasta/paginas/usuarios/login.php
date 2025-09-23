@@ -63,6 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
     <div style="text-align: center; margin-top: 20px;">
         <p>Não tem uma conta? <a href="criar_usuario.php">Crie uma aqui</a>.</p>
+        <p><a href="recuperar_senha.php">Esqueceu sua senha?</a></p>
     </div>
 </div>
 

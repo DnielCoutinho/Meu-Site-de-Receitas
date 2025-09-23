@@ -4,7 +4,7 @@ require_once('config.php'); // Conexão com o banco de dados
 
 // Busca uma receita aleatória para a seção de destaque (Hero Section)
 $featuredRecipe = null;
-$sqlFeatured = "SELECT id, nome FROM receitas ORDER BY RAND() LIMIT 1";
+$sqlFeatured = "SELECT id, nome, foto FROM receitas WHERE foto IS NOT NULL AND foto != '' ORDER BY RAND() LIMIT 1";
 $resultFeatured = $conn->query($sqlFeatured);
 
 if ($resultFeatured && $resultFeatured->num_rows > 0) {
@@ -13,7 +13,11 @@ if ($resultFeatured && $resultFeatured->num_rows > 0) {
 
 // Busca receitas do banco de dados para exibir na página inicial (grade)
 $receitas = [];
-$sql = "SELECT MIN(id) as id, nome FROM receitas GROUP BY nome ORDER BY id LIMIT 9"; // Pega 9 receitas únicas
+// Query compatível para buscar 1 receita por nome, incluindo a foto.
+$sql = "SELECT r1.id, r1.nome, r1.foto 
+        FROM receitas r1 
+        INNER JOIN (SELECT MAX(id) as id FROM receitas GROUP BY nome) r2 ON r1.id = r2.id 
+        ORDER BY r1.id DESC LIMIT 9";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
@@ -26,7 +30,7 @@ $conn->close();
 ?>
 
 <?php if ($featuredRecipe): ?>
-<section class="hero-section" style="background-image: url('/coutopasta/paginas/comidas/imagem_receita.php?id=<?php echo $featuredRecipe['id']; ?>');">
+<section class="hero-section" style="background-image: url('/coutopasta/uploads/receitas/<?php echo htmlspecialchars($featuredRecipe['foto']); ?>');">
     <div class="hero-content">
         <h1><?php echo htmlspecialchars($featuredRecipe['nome']); ?></h1>
         <p>Descubra sabores que contam histórias.</p>
@@ -42,7 +46,19 @@ $conn->close();
             <?php if (!empty($receitas)): ?>
                 <?php foreach ($receitas as $receita): ?>
                     <article class="receita-card">
-                        <img src="/coutopasta/paginas/comidas/imagem_receita.php?id=<?php echo $receita['id']; ?>" alt="Foto de <?php echo htmlspecialchars($receita['nome']); ?>">
+                        <?php if (!empty($receita['foto'])): 
+                            $grid_foto_url = $receita['foto'];
+                            if (filter_var($grid_foto_url, FILTER_VALIDATE_URL)) {
+                                $grid_image_path = htmlspecialchars($grid_foto_url);
+                            }
+                            else {
+                                $grid_image_path = '/coutopasta/uploads/receitas/' . htmlspecialchars($grid_foto_url);
+                            }
+                        ?>
+                            <img src="<?php echo $grid_image_path; ?>" alt="Foto de <?php echo htmlspecialchars($receita['nome']); ?>">
+                        <?php else: ?>
+                            <img src="/coutopasta/assets/placeholder.svg" alt="Imagem não disponível">
+                        <?php endif; ?>
                         <div class="receita-card-content">
                             <h3><?php echo htmlspecialchars($receita['nome']); ?></h3>
                             <a href="/coutopasta/paginas/comidas/visualizar_receita.php?id=<?php echo $receita['id']; ?>" class="btn">Ver Receita</a>

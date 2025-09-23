@@ -66,7 +66,7 @@ REPLACE INTO `receitas` (`nome`, `pais_id`, `tipo_refeicao_id`, `categoria_id`, 
    - Distribua 125g de queijo Mozzarella de Búfala fresca, escorrida e rasgada, sobre o molho. Adicione mais folhas frescas de manjericão, se desejar.
    - **Assar a Pizza:** Deslize cuidadosamente a pizza para a pedra de pizza ou assadeira quente no forno. Asse por 5-8 minutos, ou até que as bordas estejam douradas e infladas, o queijo borbulhante e levemente gratinado, e a base crocante. O tempo exato pode variar dependendo do seu forno.
    - Retire a pizza do forno com a pá. Regue com um fio de azeite de oliva extravirgem antes de servir.
-   - Sirva imediatamente e desfrute da sua Pizza Napolitana autêntica!', 1, 'https://images.unsplash.com/photo-1595908129339-95f14b01ac39?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixli... [truncated]'),
+   - Sirva imediatamente e desfrute da sua Pizza Napolitana autêntica!', 1, 'https://unsplash.com/photos/1595908129339-95f14b01ac39'),
 ('Espaguete ao Pomodoro', 1, 2, 1, '- 1kg de tomates italianos maduros
 - 4 colheres de sopa de azeite de oliva extravirgem
 - 1 cebola pequena, finamente picada
@@ -94,7 +94,7 @@ REPLACE INTO `receitas` (`nome`, `pais_id`, `tipo_refeicao_id`, `categoria_id`, 
    - Transfira o espaguete escorrido diretamente para a panela com o molho de tomate quente.
    - Adicione um punhado generoso de folhas frescas de manjericão (rasgadas com as mãos para liberar o aroma) e, se necessário, um pouco da água do cozimento do macarrão reservada para ajustar a consistência do molho, deixando-o mais cremoso e envolvente.
    - Misture bem, usando pinças ou duas colheres grandes, para que cada fio de macarrão seja completamente envolvido pelo molho. Cozinhe por mais 1-2 minutos em fogo baixo para que os sabores se integrem.
-   - Sirva imediatamente em pratos aquecidos, finalizando com queijo parmesão ralado na hora e mais algumas folhas de manjericão fresco para decorar. Um fio de azeite extravirgem pode ser adicionado antes de servir para realçar o brilho e o sabor.', 1, 'https://images.unsplash.com/photo-1595908129339-95f14b01ac39?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixli... [truncated]'),
+   - Sirva imediatamente em pratos aquecidos, finalizando com queijo parmesão ralado na hora e mais algumas folhas de manjericão fresco para decorar. Um fio de azeite extravirgem pode ser adicionado antes de servir para realçar o brilho e o sabor.', 1, 'https://unsplash.com/photos/1595908129339-95f14b01ac39'),
 ('Risotto', 1, 2, 1, '1 xícara de arroz para risotto (Arbório ou Carnaroli), 1.5 litro de caldo de legumes ou frango, ½ cebola média picada, ½ xícara de vinho branco seco, 2 colheres de sopa de azeite, 2 colheres de sopa de manteiga gelada, 1/2 xícara de queijo parmesão ralado, sal e pimenta a gosto.', '1. **Preparação do Caldo (Essencial para o Risotto):**
    - Em uma panela separada, mantenha 1.5 litro de caldo de legumes ou frango (caseiro ou de boa qualidade) em fogo baixo, próximo ao ponto de fervura. É fundamental que o caldo esteja sempre quente ao ser adicionado ao arroz para não interromper o cozimento e manter a temperatura constante, garantindo a cremosidade final do risotto.
 2. **Refogado Aromático (Soffritto):**
@@ -116,7 +116,7 @@ REPLACE INTO `receitas` (`nome`, `pais_id`, `tipo_refeicao_id`, `categoria_id`, 
    - Mexa vigorosamente (processo conhecido como "mantecatura") por cerca de 1-2 minutos. Isso criará uma emulsão rica e aveludada, dando ao risotto sua cremosidade final.
    - Tempere com sal e pimenta-do-reino moída na hora a gosto. Ajuste o tempero conforme sua preferência.
 7. **Servir Imediatamente:**
-   - Sirva o risotto imediatamente em pratos aquecidos para manter a temperatura e a textura perfeitas. O risotto não espera, ele deve ser apreciado assim que pronto.', 1, 'https://images.unsplash.com/photo-1595908129339-95f14b01ac39?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixli... [truncated]'),
+   - Sirva o risotto imediatamente em pratos aquecidos para manter a temperatura e a textura perfeitas. O risotto não espera, ele deve ser apreciado assim que pronto.', 1, 'https://unsplash.com/photos/1595908129339-95f14b01ac39'),
 ('Bistecca alla Fiorentina', 1, 2, 2, '1 Bife T-bone ou Porterhouse de 1 a 1.5 kg e 4-5 cm de espessura, azeite de oliva extravirgem, sal grosso, pimenta do reino moída na hora.', '1. **Preparação da Carne (Temperatura Ambiente e Secagem):**
    - Retire o bife T-bone ou Porterhouse (de 1 a 1.5 kg e 4-5 cm de espessura) da geladeira com pelo menos 2 a 3 horas de antecedência. É crucial que a carne atinja a temperatura ambiente por completo antes de ir para a grelha, garantindo um cozimento mais uniforme do centro às bordas.
    - Seque muito bem toda a superfície da carne com papel toalha. A umidade na superfície impede a formação de uma crosta perfeita.
@@ -135,7 +135,7 @@ REPLACE INTO `receitas` (`nome`, `pais_id`, `tipo_refeicao_id`, `categoria_id`, 
    - Fatie a carne em tiras grossas, separando o filé e o contrafilé do osso.
    - Disponha as fatias de carne de volta ao redor do osso na tábua de corte.
    - Tempere generosamente com mais sal grosso (flor de sal, se tiver) e pimenta-do-reino moída na hora. Finalize com um generoso fio de azeite de oliva extravirgem de boa qualidade.
-   - Sirva imediatamente, tradicionalmente acompanhada de feijão branco ou salada verde.', 1, 'https://images.unsplash.com/photo-1598515213692-5f282f751880?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&lib=rb-1.2.1&auto=format&fit=crop&w=750&q=80'),
+   - Sirva imediatamente, tradicionalmente acompanhada de feijão branco ou salada verde.', 1, 'https://via.placeholder.com/250x250?text=Imagem+Nao+Encontrada'),
 ('Feijoada Completa', 2, 2, 2, '1 kg de feijão preto, 250g de carne-seca, 250g de costelinha de porco, 200g de linguiça paio, 200g de linguiça calabresa, 150g de bacon, 2 cebolas, 4 dentes de alho, 3 folhas de louro, sal, pimenta, cheiro-verde.', '1. **Dessalgar e Preparar as Carnes Salgadas (Véspera):**
    - No dia anterior ao preparo, coloque 250g de carne-seca e 250g de costelinha de porco salgada de molho em água fria.
    - Troque a água a cada 4-6 horas (pelo menos 3-4 vezes) durante um período de 12 a 24 horas para remover o excesso de sal. Este passo é crucial para evitar que a feijoada fique excessivamente salgada.
@@ -574,4 +574,4 @@ REPLACE INTO `receitas` (`nome`, `pais_id`, `tipo_refeicao_id`, `categoria_id`, 
    - Com as costas de uma colher, crie um redemoinho na superfície do hummus.
    - Regue generosamente com um fio de azeite de oliva extravirgem de boa qualidade.
    - Decore com os grãos-de-bico inteiros reservados, uma pitada de páprica doce (ou picante) e, opcionalmente, um pouco de salsinha fresca picada.
-   - Sirva imediatamente com pão pita quente, vegetais frescos cortados (cenoura, pepino, aipo) ou como acompanhamento para pratos do Oriente Médio.', 1, 'https://images.unsplash.com/photo-1622279461400-3a3b3b3b3b3b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80');
+   - Sirva imediatamente com pão pita quente, vegetais frescos cortados (cenoura, pepino, aipo) ou como acompanhamento para pratos do Oriente Médio.', 1, 'https://via.placeholder.com/250x250?text=Imagem+Nao+Encontrada');
