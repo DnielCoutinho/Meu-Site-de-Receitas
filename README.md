@@ -1,130 +1,171 @@
-# 🍝 CoutoPasta
+<div align="center">
 
-## Descrição
-Sistema web para compartilhamento e busca de receitas culinárias, desenvolvido em PHP, HTML, CSS e JavaScript com banco de dados MySQL. A plataforma CoutoPasta permite que os usuários encontrem receitas por nome ou com base nos ingredientes que possuem em casa, filtrem por categoria e enviem suas próprias criações em uma interface moderna e responsiva.
+# 🍽️ Sabor em Clique
 
-## Funcionalidades Implementadas
+Plataforma moderna para descoberta, busca e gestão de receitas: desempenho rápido, busca inteligente, interface responsiva e API pronta para expansão.
 
-1.  **Gestão de Usuários** ✅
-    * ✅ Criar novo usuário (auto-cadastro)
-    * ✅ Entrar no sistema (login)
-    * ✅ Sair do sistema (logout)
-    * ✅ Alterar dados cadastrais (nome, e-mail)
-    * ✅ Alterar senha
-    * ✅ Recuperação de senha (simulada)
+</div>
 
-2.  **Gestão de Receitas** ✅
-    * ✅ Cadastrar novas receitas com foto (para usuários logados)
-    * ✅ Visualizar detalhes completos de uma receita
-    * ✅ Editar receitas existentes (apenas o criador ou admin)
-    * ✅ Excluir receitas (apenas o criador ou admin)
-    * ✅ Listagem na página inicial com destaque aleatório e populares
-    * ✅ Página de listagem completa com filtros
+## ✨ Visão Geral
+Aplicação web em **PHP + MySQL** com frontend em **HTML/CSS/JS** (vanilla) focada em:
+- Exploração de receitas por Destaques, Populares (mais vistas) e listagem geral.
+- Busca rápida com sugestões em tempo real e suporte a múltiplos ingredientes.
+- Estrutura de dados preparada para SEO, métricas (views) e expansão futura.
 
-3.  **Busca e Descoberta** ✅
-    * ✅ Buscar por nome da receita ou por um único ingrediente
-    * ✅ Buscar por múltiplos ingredientes (separados por vírgula)
-    * ✅ Exibição dos ingredientes que combinaram na busca
-    * ✅ Filtros por categoria diretamente na página inicial
+## ✅ Principais Funcionalidades
 
-4.  **Funcionalidades de Administrador** ✅
-    * ✅ Permissão para editar e excluir qualquer receita do sistema
-    * ✅ Ferramenta de gerenciamento para visualizar e remover receitas duplicadas
-        * **Acesso:** `http://localhost/coutopasta/paginas/comidas/gerenciar_duplicatas.php`
+### Usuários & Autenticação
+- Cadastro, login, logout, alteração de dados e senha.
+- Recuperação / redefinição simulada de senha.
+- Controle de sessão e rotas protegidas.
 
-5.  **Sistema de Autenticação e Segurança** ✅
-    * ✅ Senhas criptografadas com `password_hash`
-    * ✅ Controle de sessão com `$_SESSION` do PHP
-    * ✅ Proteção de páginas restritas (ex: cadastrar/editar receita)
-    * ✅ Prevenção de SQL Injection com *Prepared Statements*
-    * ✅ Proteção contra XSS com `htmlspecialchars()`
+### Receitas
+- Cadastro com foto, país, tipo de refeição e categoria.
+- Edição/remoção (autor ou admin).
+- Campos enriquecidos: `tempo_preparo`, `dificuldade`, `views` (contador para ranking).
+- Exibição detalhada estruturada e pronta para futura inclusão de JSON-LD.
 
-6.  **Interface Responsiva (Mobile-First)** ✅
-    * ✅ Design moderno e amigável com CSS Flexbox e Grid
-    * ✅ Menu "hambúrguer" em formato overlay para uma melhor experiência mobile
-    * ✅ Mensagens de feedback para o usuário (sucesso, erro)
+### Página Inicial
+- Seção Destaques (carrossel aleatório via `?featured=1`).
+- Seção Populares ordenada por `views`.
+- Grid "Nossas Receitas" com filtros dinâmicos de categoria (pills) carregadas via API.
 
-## Estrutura do Projeto
+### Busca Inteligente
+- Barra global com autocomplete (até 8 sugestões instantâneas).
+- Busca simples (nome ou ingrediente) com destaque do termo.
+- Busca multi-ingredientes (separados por vírgula) com ranking por número de combinações e exibição de tags.
+- Paginação na página de resultados (`buscar_receitas.php`).
 
-* `/coutopasta` (Pasta Raiz)
-    * `config.php` - Configuração do banco de dados e funções
-    * `database.sql` - Script para criar a estrutura do banco
-    * `data.sql` - Script com dados iniciais
-    * `index.php` - Página inicial com destaques e filtros
-    * `README.md` - Documentação do projeto
-    * `/css`
-        * `style.css` - Folha de estilos principal (Mobile-First)
-    * `/js`
-        * `script.js` - Interatividade do frontend (Menu)
-    * `/paginas`
-        * `/comidas`
-            * `buscar_receitas.php` - Página de resultados da busca
-            * `cadastrar_receita.php` - Formulário de cadastro
-            * `editar_receita.php` - Formulário de edição
-            * `excluir_receita.php` - Script de exclusão
-            * `gerenciar_duplicatas.php` - Ferramenta do Admin
-            * `visualizar_receita.php` - Página de detalhes da receita
-        * `/includes`
-            * `header.php` - Cabeçalho e menu de navegação
-            * `footer.php` - Rodapé
-        * `/usuarios`
-            * `alterar_dados.php` - Edição de perfil
-            * `alterar_senha.php` - Alteração de senha
-            * `criar_usuario.php` - Página de cadastro de usuário
-            * `login.php` - Página de login
-            * `logout.php` - Script de logout
-            * `recuperar_senha.php` - Formulário de recuperação
-            * `redefinir_senha.php` - Formulário para nova senha
-    * `/uploads`
-        * `/receitas` - Pasta para as imagens das receitas
+### Administração
+- Painel admin básico (`/paginas/admin/painel.php`).
+- Gerenciamento de duplicatas (`Gerenciar_duplicatas.php`).
 
-## Instalação
+### Segurança
+- Senhas com `password_hash()` / `password_verify()`.
+- Prepared Statements em acessos sensíveis.
+- Escapagem consistente com `htmlspecialchars()`.
+- Charset unificado `utf8mb4` (banco + conexão + JSON).
 
-### Pré-requisitos
-* XAMPP ou similar (Apache + MySQL + PHP)
-* Navegador web (Chrome, Firefox, etc.)
+### Frontend & Acessibilidade
+- Design responsivo (CSS Grid + Flexbox).
+- Menu hambúrguer acessível (`aria-*` + teclado).
+- Foco rápido com atalho `/` na busca.
+- Realce semântico dos termos (`<mark>` estilizado).
 
-### Passos para instalação:
+## 📁 Estrutura (resumida)
+```
+saboremclique/
+  config.php
+  database.sql
+  data.sql
+  index.php
+  api/
+    get_receitas.php
+  css/
+    style.css
+  js/
+    script.js
+  paginas/
+    includes/{header.php,footer.php}
+    comidas/{buscar_receitas.php,buscar_por_ingredientes.php,cadastrar_receita.php,...}
+    usuarios/{login.php,criar_usuario.php,...}
+    admin/painel.php
+  uploads/receitas/
+```
 
-1.  **Copiar os Arquivos**
-    * Coloque a pasta `coutopasta` dentro do diretório `htdocs` da sua instalação do XAMPP (geralmente `C:\xampp\htdocs\`).
+## 🗄️ Banco de Dados (principais tabelas)
+`receitas`
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| id | INT PK | Identificador |
+| nome | VARCHAR(255) | Nome da receita |
+| pais_id | INT FK | País de origem |
+| tipo_refeicao_id | INT FK | Café, almoço, etc. |
+| categoria_id | INT FK | Categoria culinária |
+| ingredientes | TEXT | Lista livre (texto) |
+| preparo | TEXT | Modo de preparo |
+| info_adicional | TEXT | Observações |
+| usuario_id | INT FK | Autor |
+| foto | VARCHAR(255) | Nome do arquivo ou URL |
+| tempo_preparo | VARCHAR(100) | Ex: 30 min |
+| dificuldade | ENUM('Fácil','Média','Difícil') | Dificuldade |
+| views | INT | Contador de visualizações |
+| created_at / updated_at | TIMESTAMP | Auditoria |
 
-2.  **Configurar o Banco de Dados**
-    * Inicie os módulos Apache e MySQL no painel de controle do XAMPP.
-    * Acesse o phpMyAdmin em `http://localhost/phpmyadmin`.
-    * Crie um novo banco de dados chamado `coutopasta_receitas`.
-    * Selecione o banco recém-criado, vá na aba "Importar" e execute o arquivo `database.sql` para criar as tabelas.
-    * Importe novamente, desta vez o arquivo `data.sql`, para adicionar os dados de exemplo.
+Outras: `usuarios`, `categorias`, `paises`, `tipos_refeicao`.
 
-3.  **Configurar a Conexão**
-    * Verifique o arquivo `config.php`. As credenciais padrão (`host=localhost`, `user=root`, `password=""`) já estão configuradas. Altere apenas se sua configuração for diferente.
+## 🔌 API Pública (Inicial)
+Endpoint principal: `GET /saboremclique/api/get_receitas.php`
 
-4.  **Permissões de Pasta**
-    * Garanta que a pasta `uploads/receitas/` tenha permissão de escrita para que o PHP possa salvar as imagens.
+Parâmetros suportados:
+| Parâmetro | Exemplo | Descrição |
+|-----------|---------|-----------|
+| `featured` | `1` | Retorna 6 receitas aleatórias (ignora demais) |
+| `q` | frango | Busca em nome OU ingredientes |
+| `categoria_id` | 3 | Filtra por categoria |
+| `order` | `recent` | Opções: `recent`, `views`, `az`, `za` |
+| `page` | 2 | Página (paginação) |
+| `limit` | 12 | Máx 50 |
 
-5.  **Acessar a Aplicação**
-    * Abra o navegador e acesse: `http://localhost/coutopasta/`
+Resposta (exemplo simplificado):
+```json
+{
+  "receitas": [ {"id":1,"nome":"Pizza Margherita","foto":"...","views":42,"dificuldade":"Fácil","tempo_preparo":"30 min"} ],
+  "categorias": [ {"id":1,"nome":"Massas"} ],
+  "pagination": {"page":1,"limit":20,"total":120,"pages":6}
+}
+```
 
-## Tecnologias Utilizadas
+## ⚙️ Instalação / Setup
+1. Copie a pasta `saboremclique` para `C:\xampp\htdocs\`.
+2. Inicie Apache + MySQL no XAMPP.
+3. Acesse `http://localhost/phpmyadmin`.
+4. Importe `database.sql` (cria schema `sabor_em_clique_receitas`).
+5. Importe `data.sql` (dados de exemplo + ajustes de `tempo_preparo` e `dificuldade`).
+6. Verifique `config.php` (credenciais default: root / vazio).
+7. Garanta permissão de escrita em `uploads/receitas/`.
+8. Acesse `http://localhost/saboremclique/`.
 
-* **Backend:** PHP
-* **Frontend:** HTML5, CSS3 (Flexbox, Grid), JavaScript
-* **Banco de dados:** MySQL / MariaDB
-* **Design:** Mobile-First, Design Responsivo
+## 🧪 Testes Manuais Rápidos
+- Abrir home: conferir Destaques, Populares e grid principal.
+- Digitar na busca: ver sugestões (>=2 caracteres).
+- Buscar: testar `frango`, `tomate, queijo`.
+- Acessar receita: verificar incremento futuro de `views` (a lógica pode ser adicionada em `visualizar_receita.php`).
+- Filtrar categorias: clicar pills e ver atualização da grid via XHR.
 
-## Estrutura do Banco de Dados
+## 🔒 Boas Práticas Aplicadas
+- Charset consistente `utf8mb4` (previne truncamento de emojis ou acentos).
+- Prepared statements onde há entrada dinâmica.
+- Escape de saída (`htmlspecialchars`).
+- Separação Schema (`database.sql`) x Dados (`data.sql`).
+- Função única de montagem de caminhos de imagem (`get_foto_src`).
 
-* **Tabela `usuarios`**: `id`, `nome`, `email`, `senha`, `is_admin`
-* **Tabela `receitas`**: `id`, `nome`, `ingredientes`, `preparo`, `info_adicional`, `foto`, `usuario_id`, `pais_id`, `tipo_refeicao_id`, `categoria_id`
-* **Tabela `categorias`**: `id`, `nome`
-* **Tabela `paises`**: `id`, `nome`
-* **Tabela `tipos_refeicao`**: `id`, `nome`
+## 🚀 Roadmap (Próximas Etapas)
+- Incrementar coluna `views` em visualizações reais.
+- Favoritos / lista pessoal do usuário.
+- "Recentemente vistos" (localStorage + fallback server-side futuro).
+- Dark Mode (CSS variables já facilitam).
+- Skeleton loading enquanto aguarda fetch.
+- JSON-LD (Recipe schema) para SEO.
+- Campos estruturados para nutrientes (expansão futura).
+- Filtros combinados (categoria + país + dificuldade).
+- Ordenação adicional: preparo mais rápido, aleatórias do dia.
+- Sistema de avaliação e comentários moderados.
 
-## Próximos Desenvolvimentos
+## 🛠️ Requisitos Técnicos
+- PHP >= 7.4 (recomendado 8.x)
+- MySQL/MariaDB com InnoDB
+- Extensões: `mysqli`, `mbstring`, `json`
+- Navegador moderno (ES6+)
 
-As próximas funcionalidades a serem implementadas podem incluir:
+## 🧩 Convenções Internas
+- URL base configurada em `config.php` via `BASE_URL`.
+- API retorna JSON sempre com: `receitas`, `categorias`, `pagination`.
+- Limite máximo seguro de listagem: 50 (evita sobrecarga na home).
 
-* Sistema de avaliação (estrelas) e comentários nas receitas.
-* Página de perfil do usuário com a listagem das receitas que ele cadastrou.
-* Paginação na seção "Todas as Receitas" para melhor performance.
-* Filtros avançados combinando múltiplos critérios (país + categoria, etc.).
+## 📌 Notas para Contribuição
+Sugestões de melhoria podem focar em: caching de categorias, compressão de imagens no upload, sanitização mais granular de ingredientes (tokenização), criação de migrations incrementais ao invés de recriar o schema.
+
+---
+Feito com ❤️ e fome de código.
+
